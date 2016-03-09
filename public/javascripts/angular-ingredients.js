@@ -12,7 +12,6 @@ app.factory('Ingredients', ['$http', '$q', function($http, $q){
     $http.get('/ingredients/all')
       .success(function(data) {
         ingredients.data = data;
-        debugger;
         deferred.resolve();
       });
     return deferred.promise;

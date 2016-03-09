@@ -23,7 +23,7 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
         $scope.loggedIn = false;
       });
     };
-    debugger;
+
     $scope.login = function() {
       UserAuth.login($scope.login.username, $scope.login.password)
         .then(function(){
