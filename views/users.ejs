@@ -1,0 +1,60 @@
+<h1><%=title %></h1>
+
+<div id="createUserForm">
+  <button ng-click="toggleForm()">+ add user</button>
+
+  <%if (messages.error)  { %>
+  <div class="alert alert-danger">
+    <%-messages.error%>
+
+  </div>
+  <% } %>
+  <form action="/users/createUser" method="post" class="form-signin">
+    <input  type="text" name="name" placeholder="name" class="form-control"/>
+    <input type="text" name="username" placeholder="username" class="form-control"/>
+    <input type="text" name="email" placeholder="email" class="form-control"/>
+    <input type="text" name="password" placeholder="password" class="form-control"/>
+    <select class="form-control" name="role">
+      <option value="admin" class="form-control">admin</option>
+      <option value="manager" class="form-control">manager</option>
+      <option value="fulfillment" class="form-control">fulfillment</option>
+    </select>
+    <input type="submit" value="Create New User" class="btn btn-lg btn-primary btn-block"/>
+  </form>
+</div>
+
+
+<div ng-controller="usersCtrl">
+<table class="table" id="users-table">
+  <tr ng-repeat="user in users">
+    <td>
+      Username: <input type="text" name="username" value="{{ user.username }}" ng-disabled="!isEditable">
+    </td>
+    <td>
+      Name: <input type="text" name="name" value="{{ user.name }}" ng-disabled="!isEditable">
+    </td>
+    <td>
+      Email: <input type="text" name="email" value="{{ user.email }}" ng-disabled="!isEditable">
+    </td>
+    <td>
+      {{ user.role }}
+      <select name="role" ng-disabled="!isEditable">
+        <option value="admin">Admin</option>
+        <option value="manager">Manager</option>
+        <option value="fulfillment">Fulfillment</option>
+      </select>
+    </td>
+    <td ng-hide="!isEditable">
+      Password: <input name="password">
+    </td>
+    <td>
+      <button ng-click="editUser(user)" ng-hide="isEditable" class="btn btn-primary btn-sm">edit</button>
+      <button ng-click="saveUser(user)" ng-hide="!isEditable" class="btn btn-primary btn-sm">save</button>
+
+    </td>
+    <td>
+      <button ng-hide="!isEditable" ng-click="cancel()" class="btn btn-primary btn-sm">cancel</button>
+    </td>
+  </tr>
+</table>
+</div>

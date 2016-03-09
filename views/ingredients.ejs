@@ -1,0 +1,11 @@
+<h1><%=title %></h1>
+<div ng-controller="ingredientsCtrl">
+  <table class="table" >
+    <tr ng-repeat="ingredient in ingredients">
+      <td>Name:{{ ingredient.name }}</td>
+      <td>Quantity:{{ ingredient.quantity }}</td>
+      <td>*Pending Quantity:{{ ingredient.pending_quantity }}</td>
+      <td>Warning Quantity:{{ ingredient.warning_quantity }}</td>
+    </tr>
+  </table>
+</div>

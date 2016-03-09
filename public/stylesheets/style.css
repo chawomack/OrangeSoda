@@ -1,0 +1,33 @@
+body {
+  padding: 50px;
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.form-signin {
+  width: 350px;
+  margin: 0 auto;
+}
+
+.btn-primary {
+  background-color: #00B7FF;
+  border-color: #00B7FF;
+}
+
+#user-logout {
+  color:#9d9d9d;
+}
+
+#user-logout input[type=submit]{
+  background: none;
+  border: none;
+  color: #00B7FF;
+  text-decoration: underline;
+}
+
+#users-table input[disabled]{
+  border:none;
+}

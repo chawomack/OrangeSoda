@@ -1,0 +1,18 @@
+<%if (messages.error)  { %>
+  <div class="alert alert-danger">
+    <%-messages.error%>
+
+    </div>
+<% } %>
+<form action="/addNew" method="post" class="form-signin">
+  <input  type="text" name="name" placeholder="name" class="form-control"/>
+  <input type="text" name="username" placeholder="username" class="form-control"/>
+  <input type="text" name="email" placeholder="email" class="form-control"/>
+  <input type="text" name="password" placeholder="password" class="form-control"/>
+  <select class="form-control" name="role">
+    <option value="admin" class="form-control">admin</option>
+    <option value="manager" class="form-control">manager</option>
+    <option value="fulfillment" class="form-control">fulfillment</option>
+  </select>
+  <input type="submit" value="Create New User" class="btn btn-lg btn-primary btn-block"/>
+</form>
