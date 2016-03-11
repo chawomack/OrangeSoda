@@ -21,13 +21,16 @@ a {
   color:#9d9d9d;
 }
 
-#user-logout input[type=submit]{
-  background: none;
-  border: none;
+#user-logout a{
+  padding: 0px;
   color: #00B7FF;
   text-decoration: underline;
 }
 
 #users-table input[disabled]{
   border:none;
+}
+
+.edit-icon {
+  color: #00B7FF;
 }

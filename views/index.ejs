@@ -3,12 +3,14 @@
 <head lang="en">
   <meta charset="UTF-8">
   <script src="/scripts/angular/angular.js"></script>
+
   <script src="/scripts/angular-route/angular-route.js"></script>
   <script src="/javascripts/angular-app.js"></script>
   <script src="/javascripts/angular-user.js"></script>
   <script src="/javascripts/angular-ingredients.js"></script>
   <script src="/javascripts/angular-routing.js"></script>
   <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>
+  <link rel='stylesheet' href="/scripts/font-awesome/css/font-awesome.css">
   <link rel='stylesheet' href='/stylesheets/style.css'>
   <title>6 Degrees CRM</title>
 </head>
@@ -21,7 +23,7 @@
 <%if (messages.success)  { %>
   <div class="alert alert-success"><%-messages.success %></div>
 <% } %>
-  <nav class="navbar navbar-inverse navbar-fixed-top" ng-hide="!loggedIn">
+  <nav class="navbar navbar-inverse navbar-fixed-top" ng-init="isLoggedIn()" ng-hide="!loggedIn">
         <div class="container">
         <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -37,11 +39,9 @@
       <li ng-repeat="item in navigation" ><a href="{{item.path}}">{{item.name}}</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li>
-        <form action="/logout" method="get" id="user-logout">
-          <div>Hello, <b>{{ user.username }}</b> - {{ user.role }}</div>
-          <input type="submit" value="logout" />
-        </form>
+      <li id="user-logout">
+          <div>Hello, <b>{{ user.username }}</b></div>
+          <a ng-click="logout()">logout</a>
       </li>
     </ul>
   </div><!--/.nav-collapse -->

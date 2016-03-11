@@ -35,6 +35,7 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
         })
     };
     $scope.logout = function() {
+      debugger;
       UserAuth.logout()
         .then(function(){
           $location.path('/');
@@ -59,7 +60,6 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
                   deferred.reject();
               }
           })
-            // handle error
           .error(function (data) {
               user.loggedIn = true;
               deferred.reject();
@@ -70,6 +70,7 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
     var deferred = $q.defer();
     $http.get('/logout')
       .success(function (data, status) {
+        debugger;
         if(status === 200 && data.status){
           user.loggedIn = false;
           deferred.resolve();
@@ -78,7 +79,6 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
           deferred.reject();
         }
       })
-      // handle error
       .error(function (data) {
         deferred.reject();
       });
@@ -92,12 +92,11 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
         if (data.isLoggedIn) {
           user.loggedIn = true;
           user.data = data.user;
-          deferred.resolve();
+          deferred.resolve(user);
         }
-        else
-        {
+        else {
           user.loggedIn = false;
-          deferred.reject();
+          deferred.reject(user);
         }
       });
     return deferred.promise;

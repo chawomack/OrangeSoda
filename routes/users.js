@@ -11,6 +11,7 @@ router.get('/',function(req, res){
 });
 
 router.get('/isLoggedIn',function(req, res){
+  console.log(req.user);
   if (req.user) {
     return res.status(200).json({status: 'Success', isLoggedIn: true, user: req.user})
   }

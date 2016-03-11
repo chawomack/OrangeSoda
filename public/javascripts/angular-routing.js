@@ -7,12 +7,24 @@ app.config(['$routeProvider', function($routeProvider){
     .when('/users', {
       templateUrl:'users',
       resolve: {
-        authorized: function(UserAuth, $location) { if (!UserAuth.loggedIn) { $location.path('/'); } }
+        authorized: function(UserAuth, $location) {
+          UserAuth.isLoggedIn().then(function() {
+            return
+          }, function(err) {
+            $location.path('/');
+          });
+        }
       }
     })
     .when('/ingredients', {templateUrl:'ingredients',
       resolve: {
-        authorized: function(UserAuth, $location) { if (!UserAuth.loggedIn) { $location.path('/'); } }
+        authorized: function(UserAuth, $location) {
+          UserAuth.isLoggedIn().then(function() {
+            return
+          }, function(err) {
+            $location.path('/');
+          });
+        }
       }
     })
     .otherwise({redirectTo:'/'});
