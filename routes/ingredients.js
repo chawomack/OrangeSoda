@@ -9,7 +9,7 @@ router.route('/')
     }
   })
   .post(function(req, res){
-    //if (req.user) {
+    if (req.user) {
     var ingredient = new Ingredient(req.body);
     ingredient.save(function (err, data) {
         if (err) {
@@ -17,7 +17,7 @@ router.route('/')
         }
         return res.status(200).json({status: 'Success', ingredient: data});
       });
-    //}
+    }
   });
 
 //router.route('/:id').get(function(req, res, next){

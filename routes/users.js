@@ -101,12 +101,5 @@ router.route('delete/:username').delete(function(req, res){
   }
 });
 
-//Account.update({_id: req.params.id}, { $set:req.body }, function(err, data) {
-//  if (err) {
-//    req.flash('error', err.message);
-//    return res.redirect('/#/users');
-//  }
-//  req.flash('success', "User Successfully Created");
-//  res.json(data);
-//});
+
 module.exports = router;

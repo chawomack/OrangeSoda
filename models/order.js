@@ -1,19 +1,23 @@
 var mongoose = require('mongoose');
+var User = require('./user');
+var Ingredient = require('./ingredient');
+
 
 var Order = new mongoose.Schema({
-  ingredient: Schema.Types.Ingredient,
+  ingredient: { type : mongoose.Schema.ObjectId, ref : 'Ingredient' },
   quantity: Number,
   units: String,
   ingredientTotalCost: Number,
-  placedBy: Schema.Types.User,
-  date: Date(),
+  placedBy: { type : mongoose.Schema.ObjectId, ref : 'User' },
+  date: Date,
+  vendor: { type : mongoose.Schema.ObjectId, ref : 'Vendor' },
   shipping: {
     shipper: String,
     trackingNumber: String,
     fulfilled: {
-      received: False,
-      receivedBy: Schema.Types.User,
-      date: Date()
+      received: Boolean,
+      receivedBy: { type : mongoose.Schema.ObjectId, ref : 'User' },
+      date: Date
     }
   }
 

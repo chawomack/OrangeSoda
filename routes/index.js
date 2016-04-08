@@ -26,7 +26,6 @@ router.post('/login',
 
 router.get('/logout',function(req, res, next){
   req.logout();
-  //req.flash('success', 'You were successfully logged out.');
   return res.status(200).json({status: 'Success', messages: 'You were successfully logged out.'});
 });
 
