@@ -1,36 +1,67 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
-  color: #00B7FF;
+    color: #00B7FF;
 }
 
 .form-signin {
-  width: 350px;
-  margin: 0 auto;
+    width: 350px;
+    margin: 0 auto;
 }
 
 .btn-primary {
-  background-color: #00B7FF;
-  border-color: #00B7FF;
+    background-color: #00B7FF;
+    border-color: #00B7FF;
 }
 
 #user-logout {
-  color:#9d9d9d;
+    color: #9d9d9d;
 }
 
-#user-logout a{
-  padding: 0px;
-  color: #00B7FF;
-  text-decoration: underline;
+#user-logout a {
+    padding: 0px;
+    color: #00B7FF;
+    text-decoration: underline;
 }
 
-#users-table input[disabled]{
-  border:none;
+#users-table input[disabled] {
+    border: none;
 }
 
 .edit-icon {
-  color: #00B7FF;
+    color: #00B7FF;
+}
+
+.confirm-popup {
+    position: absolute;
+    top: 30%;
+    left: 35%;
+    right: 35%;
+    width: 300px;
+    height: 150px;
+    z-index: 1000;
+    background: white;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: scroll;
+}
+
+.confirm-popup .close {
+    margin-top: -8px;
+}
+
+.confirm-popup .btn {
+    margin-left: 33%;
+}
+
+.blackout {
+    background: rgba(0, 0, 0, .4);
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 900;
 }

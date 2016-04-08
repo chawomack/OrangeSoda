@@ -42,6 +42,11 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
           $scope.loggedIn = false;
         })
     };
+
+    $scope.hidePopup = true;
+    $scope.togglePopup = function() {
+      $scope.hidePopup = !$scope.hidePopup;
+    }
 }]);
 
 

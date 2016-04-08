@@ -1,0 +1,44 @@
+<h1><%=title %></h1>
+<div ng-controller="inOutCtrl">
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Incoming Shipments</h3>
+    </div>
+    <div class="panel-body">
+      <table class="table">
+        <tr ng-repeat="order in incomingOrders">
+          <td>{{ order.ingredient.name }}</td>
+          <td>{{ order.quantity}} {{ order.units }}</td>
+          <td> {{ order.vendor.company }} </td>
+          <td> {{ order.shipping.shipper }} </td>
+          <td> {{ order.shipping.trackingNumber }} </td>
+          <td>
+              <button class="btn btn-md btn-primary" ng-click="shipmentReceived(order)">Received</button>
+          </td>
+        </tr>
+      </table>
+
+    </div>
+  </div>
+
+
+  <div class="panel panel-default">
+    <div class="panel-heading">
+      <h3 class="panel-title">Outgoing Shipments</h3>
+    </div>
+    <div class="panel-body">
+      Panel content
+    </div>
+  </div>
+  <div ng-class="{blackout:!hidePopup}">
+    <div class="panel-warning confirm-popup" ng-hide="hidePopup">
+      <div class="panel-heading">
+        <a ng-click="togglePopup()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      </div>
+      <div class="panel-body">
+        <h5>Are you sure this order was received? </h5>
+        <button class="btn btn-warning" ng-click="confirmShipment()">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

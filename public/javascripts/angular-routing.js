@@ -27,5 +27,6 @@ app.config(['$routeProvider', function($routeProvider){
         }
       }
     })
+    .when('/inout', {templateUrl:'inout'})
     .otherwise({redirectTo:'/'});
 }]);

@@ -5,13 +5,13 @@ var Order = require('../models/order');
 var Ingredient = require('../models/ingredient');
 var Vendor = require('../models/vendor');
 
-/*
+
 router.get('/',function(req, res){
   if (req.user) {
     res.render('orders', {title: 'Orders', messages: req.flash()});
   }
 });
-*/
+
 
 router.route('/addNew')
   .get(function(req, res) {
@@ -58,6 +58,44 @@ router.get('/all',function(req, res){
       }
       res.status(200).json({status: 'Success', orders: orders});
     })
+  }
+});
+
+router.get('/incoming',function(req, res){
+  if (req.user) {
+    Order.find({shipping: {fulfilled: {received: false }}}).populate('ingredient')
+      .populate('vendor').exec(function (err, orders) {
+      if (err) {
+        return next(err)
+      }
+      res.status(200).json({status: 'Success', orders: orders});
+    });
+  }
+});
+
+router.route('/:id')
+  .get(function(req, res){
+    Order.find({_id: req.params.id}, function(err, order){
+      if (err) {
+        return next(err)
+      }
+        return res.status(200).json({status: 'Success', order: order});
+    })
+  });
+
+router.post('/fulfilled', function(req, res){
+  if (req.user) {
+  Order.update({_id: req.body.id},{$set: {shipping: {fulfilled: {received: true }}}}, function (err, order) {
+      if (err) {
+        return res.json({status: 'Error', messages: err.message});
+      }
+      Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(req.body.quantity)}},
+      function(err, ingredient){
+        if (err)
+          return res.json({status: 'Error', messages: err.message})
+      });
+      res.status(200).json({status: 'Success', order: order});
+    });
   }
 });
 
