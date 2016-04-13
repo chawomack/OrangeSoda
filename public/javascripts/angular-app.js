@@ -7,7 +7,7 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
       {name: 'Users', path: '/#/users'},
       {name: 'Ingredients', path: '/#/ingredients'},
       {name: 'Orders', path: '/#/orders'},
-      {name: 'Vendors', path: '/#/vendor'},
+      {name: 'Vendors', path: '/#/vendors'},
       {name: 'In/Out', path: '/#/inout'},
       {name: 'Reports', path: '/#/reports'}
     ];
