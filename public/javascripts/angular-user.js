@@ -1,10 +1,18 @@
 var app = angular.module('CRM');
 
 app.controller('usersCtrl', ['$scope', 'Users', function($scope, Users){
-  $scope.getAllUsers = Users.getAllUsers().then(function(){$scope.users =  Users.data.users;});
-  $scope.isEditable = false;
-  $scope.editUser = function() {
-    $scope.isEditable = true;
+  $scope.isEditable = [];
+  $scope.getAllUsers = Users.getAllUsers().then(function(){
+    $scope.users =  Users.data.users;
+    for(var i = 0; i < $scope.users.length; i++)
+      $scope.isEditable[i] = false;
+  });
+
+  $scope.editUser = function(index) {
+    $scope.isEditable[index] = true;
+  };
+  $scope.cancel = function(index) {
+    $scope.isEditable[index] = false;
   }
 }]);
 

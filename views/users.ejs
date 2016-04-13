@@ -9,7 +9,7 @@
 
   </div>
   <% } %>
-  <form action="/users/addNew" method="post" class="form-signin">
+  <form action="/users/addNew" method="post" class="add-new-form form-inline">
     <input  type="text" name="name" placeholder="name" class="form-control"/>
     <input type="text" name="username" placeholder="username" class="form-control"/>
     <input type="text" name="email" placeholder="email" class="form-control"/>
@@ -19,42 +19,50 @@
       <option value="manager" class="form-control">manager</option>
       <option value="fulfillment" class="form-control">fulfillment</option>
     </select>
-    <input type="submit" value="Create New User" class="btn btn-lg btn-primary btn-block"/>
+    <input type="submit" value="Create New User" class="btn btn-sm btn-primary"/>
   </form>
 </div>
 
 
 <div ng-controller="usersCtrl">
-<table class="table" id="users-table">
+<table class="table crm-table" id="users-table" >
+  <thead>
+    <th>User</th>
+    <th>Details</th>
+    <th>Edit</th>
+  </thead>
   <tr ng-repeat="user in users">
     <td>
-      Username: <input type="text" name="username" value="{{ user.username }}" ng-disabled="!isEditable">
+      <input type="text" name="name" value="{{ user.name }}" ng-disabled="!isEditable[$index]" class="input-md user">
+      <div  class="user-field">
+        <i class="fa fa-user" aria-hidden="true"></i>
+        <input type="text" name="username" value="{{ user.username }}" ng-disabled="!isEditable[$index]" class="input-sm">
+      </div>
     </td>
     <td>
-      Name: <input type="text" name="name" value="{{ user.name }}" ng-disabled="!isEditable">
+      <div  ng-hide="!isEditable[$index]" class="user-field">
+        <i class="fa fa-key" aria-hidden="true"></i>
+        <input name="password" placeholder="password" class="input-sm">
+      </div>
+      <div  class="user-field">
+        <i class="fa fa-envelope-o" aria-hidden="true"></i>
+        <input type="text" name="email" value="{{ user.email }}" ng-disabled="!isEditable[$index]"  class="input-sm">
+      </div>
+      <div class="user-field">
+        <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+        <select name="role" ng-disabled="!isEditable[$index]" class="form-control input-sm">
+          <option value="admin" ng-selected="user.role == 'admin'">Admin</option>
+          <option value="manager" ng-selected="user.role == 'manager'">Manager</option>
+          <option value="fulfillment" ng-selected="user.role == 'fulfillment'">Fulfillment</option>
+        </select>
+      </div>
     </td>
     <td>
-      Email: <input type="text" name="email" value="{{ user.email }}" ng-disabled="!isEditable">
+      <a ng-click="editUser($index)" ng-hide="isEditable[$index]" class="edit-icon"><i class="fa fa-pencil"></i></a>
+      <a ng-hide="!isEditable[$index]" ng-click="cancel($index)"><i class="fa fa-times-circle-o" aria-hidden="true"></i></a>
+      <a ng-click="saveUser(user)" ng-hide="!isEditable[$index]"><i class="fa fa-floppy-o" aria-hidden="true"></i></a>
     </td>
-    <td>
-      Role: {{ user.role }}
-      <select name="role" ng-disabled="!isEditable">
-        <option value="admin">Admin</option>
-        <option value="manager">Manager</option>
-        <option value="fulfillment">Fulfillment</option>
-      </select>
-    </td>
-    <td ng-hide="!isEditable">
-      Password: <input name="password">
-    </td>
-    <td>
-      <a ng-click="editUser(user)" ng-hide="isEditable" class="edit-icon"><i class="fa fa-pencil"></i></a>
-      <button ng-click="saveUser(user)" ng-hide="!isEditable" class="btn btn-primary btn-sm">save</button>
 
-    </td>
-    <td>
-      <button ng-hide="!isEditable" ng-click="cancel()" class="btn btn-primary btn-sm">cancel</button>
-    </td>
   </tr>
 </table>
 </div>

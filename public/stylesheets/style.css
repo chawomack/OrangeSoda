@@ -65,3 +65,30 @@ a {
     height: 100%;
     z-index: 900;
 }
+
+.add-new-form {
+    margin: 45px 0;
+}
+
+.crm-table.table > tbody > tr > td, .crm-table.table > tbody > tr > th {
+    padding: 20px 15px;
+}
+.crm-table .input-sm, .crm-table .input-md {
+    border: none;
+    border-bottom: 3px solid #DDD;
+    outline: none;
+}
+.crm-table .input-sm:focus, .crm-table .input-md:focus{
+    border-bottom: 3px solid #00B7FF;
+}
+.crm-table .user {
+    display:block;
+    margin-bottom: 10px;
+}
+.user-field {
+    margin: 10px 0;
+}
+.user-field select {
+    width: 120px;
+    display:inline;
+}

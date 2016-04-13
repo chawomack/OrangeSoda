@@ -9,6 +9,9 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var emailAPI = require('./routes/email');
 var ingredients = require('./routes/ingredients');
+var orders = require('./routes/orders');
+var vendors = require('./routes/vendors');
+var inOut = require('./routes/in-out');
 var flash = require('connect-flash');
 
 var app = express();
@@ -19,6 +22,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var expressSession = require('express-session');
 var User = require('./models/user');
 var Ingredient = require('./models/ingredient');
+var Order = require('./models/order');
+var Vendor = require('./models/vendor');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -45,6 +50,9 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/ingredients', ingredients);
 app.use('/email', emailAPI);
+app.use('/orders', orders);
+app.use('/vendors', vendors);
+app.use('/inout', inOut);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
