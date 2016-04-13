@@ -83,12 +83,7 @@ router.route('/addNew')
               req.flash('error', err.message);
               res.json({status: 'Error', message: err.message});
             }
-
-            passport.authenticate('local')(req, res, function () {
-              console.error("authentication in progress...");
-              req.flash('success', "User Successfully Created");
-              res.status(200).json({status: 'Success', user: {username: user.username, name: user.name, role: user.role }})
-            });
+            return res.status(200).json({status: 'Success', user: {username: user.username, name: user.name, role: user.role }})
           });
       }
   });
