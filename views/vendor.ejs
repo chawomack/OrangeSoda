@@ -1,0 +1,18 @@
+<%if (messages.error)  { %>
+  <div class="alert alert-danger">
+    <%-messages.error%>
+
+    </div>
+<% } %>
+<form action="/addNew" method="post" class="form-signin">
+  <input  type="text" name="id" placeholder="id" class="form-control"/>
+  <input type="text" name="company" placeholder="company" class="form-control"/>
+  <input type="text" name="primary-contact" placeholder="primary-contact" class="form-control"/>
+  <input type="text" name="phone" placeholder="phone" class="form-control"/>
+  <input type="text" name="email" placeholder="email" class="form-control"/>
+  <input type="text" name="address" placeholder="address" class="form-control"/>
+  <input type="text" name="billing-address" placeholder="billing-address" class="form-control"/>
+  <input type="text" name="orders" placeholder="orders" class="form-control"/>
+  <input type="text" name="notes" placeholder="notes" class="form-control"/>
+  <input type="submit" value="Create New Vendor" class="btn btn-lg btn-primary btn-block"/>
+</form>

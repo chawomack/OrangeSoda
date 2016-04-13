@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var emailAPI = require('./routes/email');
 var ingredients = require('./routes/ingredients');
 var orders = require('./routes/orders');
-var vendors = require('./routes/vendors');
+var vendors = require('./routes/vendor.ejs');
 var inOut = require('./routes/in-out');
 var flash = require('connect-flash');
 
@@ -51,7 +51,7 @@ app.use('/users', users);
 app.use('/ingredients', ingredients);
 app.use('/email', emailAPI);
 app.use('/orders', orders);
-app.use('/vendors', vendors);
+app.use('/vendor', vendors);
 app.use('/inout', inOut);
 
 // catch 404 and forward to error handler
