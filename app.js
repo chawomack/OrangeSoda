@@ -10,7 +10,7 @@ var users = require('./routes/users');
 var emailAPI = require('./routes/email');
 var ingredients = require('./routes/ingredients');
 var orders = require('./routes/orders');
-var vendors = require('./routes/vendor.ejs');
+var vendors = require('./routes/vendors');
 var inOut = require('./routes/in-out');
 var flash = require('connect-flash');
 
