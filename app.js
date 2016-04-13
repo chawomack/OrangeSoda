@@ -51,7 +51,7 @@ app.use('/users', users);
 app.use('/ingredients', ingredients);
 app.use('/email', emailAPI);
 app.use('/orders', orders);
-app.use('/vendor', vendors);
+app.use('/vendors', vendors);
 app.use('/inout', inOut);
 
 // catch 404 and forward to error handler
