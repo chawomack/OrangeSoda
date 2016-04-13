@@ -34,4 +34,27 @@ router.get('/all',function(req, res){
   }
 });
 
+router.put('/update',function(req, res){
+  if (req.user) {
+    console.log(req.body)
+    Vendor.update({_id: req.body.id}, {$set: req.body}, function (err, vendor) {
+      if (err) {
+        return res.json({status: 'Error', messages: err.message})
+      }
+      return res.status(200).json({status: 'Success', vendor: vendor});
+    })
+  }
+});
+
+router.delete('/delete', function(req, res){
+  if (req.user) {
+    Vendor.remove({_id: req.body.id}, function (err, vendor) {
+      if (err) {
+        return res.json({status: 'Error', messages: err.message});
+      }
+      return res.status(200).json({status: 'Success', vendor: vendor});
+    })
+  }
+});
+
 module.exports = router;
