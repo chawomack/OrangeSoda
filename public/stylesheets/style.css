@@ -58,7 +58,7 @@ a {
 
 .blackout {
     background: rgba(0, 0, 0, .4);
-    position: absolute;
+    position: fixed;
     top: 0px;
     left: 0px;
     width: 100%;
@@ -91,4 +91,19 @@ a {
 .user-field select {
     width: 120px;
     display:inline;
+}
+
+.delete {
+    text-align:right;
+    margin-top: 10px;
+}
+.delete-icon {
+    color: #a94442
+}
+.add-new {
+    margin-bottom: 20px;
+    cursor:pointer;
+}
+.cancel {
+    color: #f0ad4e;
 }

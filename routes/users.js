@@ -76,22 +76,27 @@ router.route('/addNew')
   })
   .post(function(req, res) {
       if (req.user) {
+        console.log(req.body);
         User.register(new User({username: req.body.username, name: req.body.name, email: req.body.email, role: req.body.role}),
           req.body.password, function (err, user) {
+            console.log(user);
             if (err) {
               console.error(err);
               req.flash('error', err.message);
-              res.json({status: 'Error', message: err.message});
+              return res.json({status: 'Error', message: err.message});
             }
             return res.status(200).json({status: 'Success', user: {username: user.username, name: user.name, role: user.role }})
           });
       }
   });
 
-router.route('delete/:username').delete(function(req, res){
+router.route('/delete/:username').delete(function(req, res){
   if (req.user) {
     User.remove({username: req.params.username}, function(err, user){
-      if (err) {res.json({status: err.message})}
+      if (err)
+        return res.json({status:'Error', message: err.message});
+
+      return res.status(200).json({status: 'Success'})
     })
   }
 });

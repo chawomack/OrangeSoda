@@ -1,6 +1,6 @@
 var app = angular.module("CRM", ['ngRoute']);
 
-app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  function($scope, UserAuth, $location, $window){
+app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$timeout',  function($scope, UserAuth, $location, $window, $timeout){
     $scope.name = "6 Degrees Marketing";
 
     $scope.navigation = [
@@ -15,6 +15,8 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
     $scope.user = {};
     $scope.login = {};
     $scope.loggedIn = false;
+    $scope.msgHidden = true;
+
     $scope.isLoggedIn = function() {
       UserAuth.isLoggedIn().then(function () {
         $scope.user = UserAuth.data;
@@ -46,6 +48,15 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window',  funct
     $scope.hidePopup = true;
     $scope.togglePopup = function() {
       $scope.hidePopup = !$scope.hidePopup;
+    };
+
+    $scope.showMessage = function(msg, success) {
+      $scope.msgHidden = false;
+      $scope.msgSuccess = success;
+      $scope.msg = msg.status;
+      $timeout(function(){
+        $scope.msgHidden = true;
+      }, 2000)
     }
 }]);
 
