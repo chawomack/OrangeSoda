@@ -1,10 +1,10 @@
 <div class="h2">Orders- I ain't done!</div>
 <div ng-controller="ordersCtrl">
     <table class="table">
-        <tr ng-repeat="order in orders">
+        <tr ng-repeat="order in orders | limitTo: 5">
             <td>Order Id: {{ order.id }}</td>
             <td>Quanity: {{order.quantity}} {{order.unit}}</td>
-            <td>Total: {{order.total}}</td>
+            <td>Total: {{order.ingredientTotalCost}}</td>
             <td>Vendor: {{order.vendor}}</td>
             <td>Placed By: {{order.placedBy}}</td>
             <td>Order Date: {{order.date}}</td>
@@ -43,11 +43,11 @@
         <input type="text" class="form-control" placeholder="S">
     </div>
 
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="">
-    </div>
+    <!--<div class="form-group">-->
+        <!--<input type="text" class="form-control" placeholder="">-->
+    <!--</div>-->
 
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="">
-    </div>
+    <!--<div class="form-group">-->
+        <!--<input type="text" class="form-control" placeholder="">-->
+    <!--</div>-->
 </form>
