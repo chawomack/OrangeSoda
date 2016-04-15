@@ -1,10 +1,12 @@
 var app = angular.module('CRM');
 
-app.controller('inOutCtrl', ['$scope', 'Orders', function($scope, Orders){
+app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batches', function($scope, Orders, Ingredients, Batches){
+  $scope.hideForm = true;
+  $scope.order = "";
+  $scope.batch = {};
   $scope.getIncoming = Orders.getIncoming().then(function() {
     $scope.incomingOrders = Orders.data.orders;
   });
-  $scope.order = "";
   $scope.shipmentReceived = function(order) {
     $scope.order = order;
     $scope.togglePopup()
@@ -13,8 +15,15 @@ app.controller('inOutCtrl', ['$scope', 'Orders', function($scope, Orders){
     Orders.confirmShipment($scope.order).then(function(){
       $scope.togglePopup();
     });
-  }
-
+  };
+  $scope.submit = function() {
+    Users.addNew(this.batch).then(function() {
+      $scope.batch = {};
+    })
+  };
+  $scope.getIngredients = Ingredients.getAll().then(function() {
+    $scope.ingredients = Ingredients.data.ingredients;
+  });
 
 }]);
 
@@ -43,7 +52,7 @@ app.factory('Orders', ['$http', '$q', function($http, $q){
 
   orders.confirmShipment = function(order) {
     var deferred = $q.defer();
-    $http.post('/orders/fulfilled', {id:order._id, ingredient:order.ingredient._id, quantity:order.quantity})
+    $http.post('/orders/fulfilled', {id:order._id, ingredient:order.ingredient._id, quantity:order.quantity, units:order.units})
       .success(function(data) {
         orders.data = data;
         deferred.resolve();
@@ -52,4 +61,30 @@ app.factory('Orders', ['$http', '$q', function($http, $q){
   };
 
   return orders;
+}]);
+
+app.factory('Batch', ['$http', '$q', function($http, $q){
+  batches = {};
+  batches.getAll = function() {
+    var deferred = $q.defer();
+    $http.get('/batch/all')
+      .success(function(data) {
+        batches.data = data;
+        deferred.resolve();
+      });
+    return deferred.promise;
+  };
+  batches.addNew = function(newBatch) {
+    var deferred = $q.defer();
+    $http.post('/batch/addNew', newBatch)
+      .success(function(data) {
+        batches.data = data;
+        batches.message = data.status;
+        deferred.resolve();
+      });
+    return deferred.promise;
+  };
+
+
+  return batches;
 }]);

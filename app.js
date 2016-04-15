@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var convertUnits = require('convert-units');
 
+
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var emailAPI = require('./routes/email');
@@ -13,9 +14,10 @@ var ingredients = require('./routes/ingredients');
 var orders = require('./routes/orders');
 var vendors = require('./routes/vendors');
 var inOut = require('./routes/in-out');
+var batch = require('./routes/batches');
 var flash = require('connect-flash');
-
 var app = express();
+
 
 var logger = require('morgan');
 var passport = require('passport');
@@ -25,6 +27,8 @@ var User = require('./models/user');
 var Ingredient = require('./models/ingredient');
 var Order = require('./models/order');
 var Vendor = require('./models/vendor');
+var Batch = require('./models/batch');
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -33,18 +37,19 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+
 app.use(flash());
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
 // scripts setup
 app.use('/scripts', express.static(__dirname + '/node_modules/'));
 app.use(require('express-session')({ secret: 'keyboard cat', resave: false, saveUninitialized: false }));
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 // routes
 app.use('/', routes);
@@ -54,6 +59,8 @@ app.use('/email', emailAPI);
 app.use('/orders', orders);
 app.use('/vendors', vendors);
 app.use('/inout', inOut);
+app.use('/batch', batch);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -94,7 +101,6 @@ mongoose.connect('mongodb://localhost/6DegreesCRM');
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
-
 
 
 module.exports = app;

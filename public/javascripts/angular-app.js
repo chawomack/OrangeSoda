@@ -12,6 +12,14 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
       {name: 'Reports', path: '/#/reports'}
     ];
 
+    $scope.units = [
+      {name: 'milligrams', value: 'mg'},
+      {name: 'grams', value: 'g'},
+      {name: 'kilograms', value: 'kg'},
+      {name: 'milliliter', value: 'ml'},
+      {name: 'liter', value: 'ltr'}
+    ];
+
     $scope.user = {};
     $scope.login = {};
     $scope.loggedIn = false;

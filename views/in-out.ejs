@@ -1,5 +1,7 @@
 <h1><%=title %></h1>
 <div ng-controller="inOutCtrl">
+
+
   <div class="panel panel-default">
     <div class="panel-heading">
       <h3 class="panel-title">Incoming Shipments</h3>
@@ -21,6 +23,22 @@
     </div>
   </div>
 
+  <!-- Add Batch Form-->
+  <div class="add-new">
+    <a ng-click="toggleForm()"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}' aria-hidden="true"></i>
+      add new batch</a>
+  </div>
+  <div id="" ng-hide="hideForm">
+
+    <form ng-submit="submit()" class="add-new-form form-inline">
+      <!--<input type="text" name="password" placeholder="password" ng-model="newUser.password" class="form-control"/>-->
+      <select ng-options="ingredient as ingredient.name for ingredient in ingredients track by ingredient.id"
+              ng-model="batch.ingredient" class="form-control"></select>
+      <input type="text" name="quantity" placeholder="quantity" ng-model="batch.quantity" class="form-control"/>
+      <select ng-options="unit as unit.name for unit in units track by unit.value" ng-model="batch.unit" class="form-control"></select>
+      <input type="submit" value="Add Batch" class="btn btn-sm btn-primary"/>
+    </form>
+  </div>
 
   <div class="panel panel-default">
     <div class="panel-heading">

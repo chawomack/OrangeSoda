@@ -5,7 +5,7 @@ var convertUnits = require('convert-units');
 var Order = require('../models/order');
 var Ingredient = require('../models/ingredient');
 var Vendor = require('../models/vendor');
-
+var unitConversion = require('../API/unitConversion');
 
 router.get('/',function(req, res){
   if (req.user) {
@@ -31,12 +31,17 @@ router.route('/addNew')
           return res.json({status: 'Error', messages: err.message})
         }
         //// adds order to ingredient document
-        var convertedQty = convertOrderUnitstoIngredientUnits(req.body.ingredient, order);
-        Ingredient.update({_id: req.body.ingredient}, { $addToSet: {orders: order._id},
-          $inc:{pending_quantity: convertedQty} },  function(err, ingredient){
-          if (err) {
-            return res.json({status: 'Error', messages: err.message})
-          }
+        unitConversion(req.body.ingredient, order, function(err, qty){
+          if (err)
+            return res.json({status: 'Error', messages: err.message});
+
+          Ingredient.update({_id: req.body.ingredient}, { $addToSet: {orders: order._id},
+            $inc:{pending_quantity: qty} },  function(err, ingredient){
+            if (err) {
+              return res.json({status: 'Error', messages: err.message})
+            }
+          });
+
         });
 
         // adds order to vendor document
@@ -91,11 +96,15 @@ router.post('/fulfilled', function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      var convertedQty = convertOrderUnitstoIngredientUnits(req.body.ingredient,req.body);
-      Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(req.body.quantity)}},
-      function(err, ingredient){
+      unitConversion(req.body.ingredient,req.body, function(err, qty){
         if (err)
           return res.json({status: 'Error', messages: err.message})
+
+        Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(qty)}},
+          function(err, ingredient){
+            if (err)
+              return res.json({status: 'Error', messages: err.message})
+          });
       });
       res.status(200).json({status: 'Success', order: order});
     });
@@ -124,20 +133,5 @@ router.delete('/delete', function(req, res){
   }
 });
 
-function convertOrderUnitstoIngredientUnits(ingredientId, order) {
-  //gets current ingredient units
-  var ingredientUnits = Ingredient.find({_id: ingredientId}, function(err, data){
-    if (err) {
-      return res.json({status: 'Error', messages: err.message});
-    }
-    return data.units;
-  });
-
-  //converts units to the same
-  if (ingredientUnits != order.units) {
-   return convertUnits(order.quantity).from(order.units).to(ingredientUnits)
-  }
-
-}
 module.exports = router;
 
