@@ -28,6 +28,17 @@ app.config(['$routeProvider', function($routeProvider){
         }
       }
     })
+      .when('/orders', {templateUrl:'orders',
+          resolve: {
+              authorized: function(UserAuth, $location) {
+                  UserAuth.isLoggedIn().then(function() {
+                      return
+                  }, function(err) {
+                      $location.path('/');
+                  });
+              }
+          }
+      })
     .when('/inout', {templateUrl:'inout'})
     .otherwise({redirectTo:'/'});
 }]);
