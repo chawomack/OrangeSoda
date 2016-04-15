@@ -7,6 +7,7 @@ app.controller('usersCtrl', ['$scope', 'Users', function($scope, Users){
   $scope.deletedUser = {};
   $scope.hideForm = true;
   $scope.deleteMode = false;
+
   $scope.getAllUsers = Users.getAllUsers().then(function(){
     $scope.users =  Users.data.users;
     for(var i = 0; i < $scope.users.length; i++)
@@ -39,9 +40,7 @@ app.controller('usersCtrl', ['$scope', 'Users', function($scope, Users){
       $scope.showMessage(Users.message, true)
     });
   };
-  $scope.toggleForm = function() {
-    $scope.hideForm = !$scope.hideForm;
-  };
+
   $scope.toggleDelete = function() {
    $scope.deleteMode = !$scope.deleteMode;
   };

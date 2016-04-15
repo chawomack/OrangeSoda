@@ -24,6 +24,7 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
     $scope.login = {};
     $scope.loggedIn = false;
     $scope.msgHidden = true;
+    $scope.hidePopup = true;
 
     $scope.isLoggedIn = function() {
       UserAuth.isLoggedIn().then(function () {
@@ -53,9 +54,9 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
         })
     };
 
-    $scope.hidePopup = true;
-    $scope.togglePopup = function() {
-      $scope.hidePopup = !$scope.hidePopup;
+
+    $scope.toggleForm = function(hidden) {
+      this.hideForm = !hidden;
     };
 
     $scope.showMessage = function(msg, success) {
