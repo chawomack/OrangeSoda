@@ -1,5 +1,5 @@
 <div class="h2">Orders</div>
-<div ng-controller="ordersCntrl">
+<div ng-controller="ordersCtrl">
     <table class="table">
         <tr ng-repeat="order in orders">
             <td>Order Id: {{ order.id }}</td>
@@ -9,9 +9,8 @@
             <td>Placed By: {{order.placedBy}}</td>
             <td>Order Date: {{order.date}}</td>
             <td>Shipper: {{order.shipping.shipper}} </td>
-            
             <td>Tracking Id: {{order.shipping.trackingNumber}}</td>
-            <td>Fulfilled: {{order.fulfilled}}</td>
+            <!--<td>Fulfilled: {{order.fulfilled}}</td>-->
         </tr>
     </table>
 </div>
