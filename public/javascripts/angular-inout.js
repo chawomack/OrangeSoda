@@ -10,20 +10,35 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
     $scope.incomingOrders = Orders.data.orders;
   });
 
-  $scope.shipmentReceived = function(order) {
-    $scope.order = order;
+  $scope.shipmentReceived = function(type, order) {
+    debugger;
+    if(type == "order")
+      $scope.order = order;
+    else
+      $scope.batch = order;
     $scope.togglePopup()
   };
 
-  $scope.confirmShipment = function() {
-    Orders.confirmShipment($scope.order).then(function(){
-      $scope.togglePopup();
-    });
+  $scope.confirmShipment = function()  {
+    debugger;
+    if ($scope.order) {
+      Orders.confirmShipment($scope.order).then(function () {
+        $scope.togglePopup();
+        $scope.showMessage(Orders.message, true);
+      });
+    }
+    else {
+      Batch.fulfill($scope.batch).then(function () {
+        $scope.togglePopup();
+        $scope.showMessage(Batch.message, true);
+      });
+    }
   };
 
   $scope.submit = function() {
-    Users.addNew(this.batch).then(function() {
+    Batch.addNew(this.batch).then(function() {
       $scope.batch = {};
+      $scope.getOutgoingBatches();
     })
   };
 
@@ -31,8 +46,8 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
     $scope.ingredients = Ingredients.data.ingredients;
   });
 
-  $scope.getBatches = Batch.getAll().then(function() {
-    $scope.batches = Batch.data.batch;
+  $scope.getOutgoingBatches = Batch.outgoing().then(function() {
+    $scope.batches = Batch.data.batches;
   });
 
 }]);
@@ -41,6 +56,7 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
 
 app.factory('Batch', ['$http', '$q', function($http, $q){
   batches = {};
+
   batches.getAll = function() {
     var deferred = $q.defer();
     $http.get('/batch/all')
@@ -50,9 +66,32 @@ app.factory('Batch', ['$http', '$q', function($http, $q){
       });
     return deferred.promise;
   };
+
+
+  batches.outgoing = function() {
+    var deferred = $q.defer();
+    $http.get('/batch/outgoing')
+      .success(function(data) {
+        batches.data = data;
+        deferred.resolve();
+      });
+    return deferred.promise;
+  };
+
   batches.addNew = function(newBatch) {
     var deferred = $q.defer();
     $http.post('/batch/addNew', newBatch)
+      .success(function(data) {
+        batches.data = data;
+        batches.message = data.status;
+        deferred.resolve();
+      });
+    return deferred.promise;
+  };
+
+  batches.fulfill = function(batch) {
+    var deferred = $q.defer();
+    $http.put('/batch/fulfilled', batch)
       .success(function(data) {
         batches.data = data;
         batches.message = data.status;

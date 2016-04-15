@@ -15,7 +15,7 @@
           <td> {{ order.shipping.shipper }} </td>
           <td> {{ order.shipping.trackingNumber }} </td>
           <td>
-              <button class="btn btn-md btn-primary" ng-click="shipmentReceived(order)">Received</button>
+              <button class="btn btn-md btn-primary" ng-click="shipmentReceived('order', order)">Received</button>
           </td>
         </tr>
       </table>
@@ -25,17 +25,17 @@
 
   <!-- Add Batch Form-->
   <div class="add-new">
-    <a ng-click="toggleForm()"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}' aria-hidden="true"></i>
+    <a ng-click="toggleForm(hideForm)"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}' aria-hidden="true"></i>
       add new batch</a>
   </div>
   <div id="" ng-hide="hideForm">
 
     <form ng-submit="submit()" class="add-new-form form-inline">
       <!--<input type="text" name="password" placeholder="password" ng-model="newUser.password" class="form-control"/>-->
-      <select ng-options="ingredient as ingredient.name for ingredient in ingredients track by ingredient.id"
+      <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients"
               ng-model="batch.ingredient" class="form-control"></select>
       <input type="text" name="quantity" placeholder="quantity" ng-model="batch.quantity" class="form-control"/>
-      <select ng-options="unit as unit.name for unit in units track by unit.value" ng-model="batch.unit" class="form-control"></select>
+      <select ng-options="unit.value as unit.name for unit in units" ng-model="batch.units" class="form-control"></select>
       <input type="submit" value="Add Batch" class="btn btn-sm btn-primary"/>
     </form>
   </div>
@@ -45,7 +45,16 @@
       <h3 class="panel-title">Outgoing Shipments</h3>
     </div>
     <div class="panel-body">
-      Panel content
+      <table class="table">
+        <tr ng-repeat="batch in batches">
+          <td>{{ batch.ingredient.name }}</td>
+          <td>{{ batch.quantity}} {{ batch.units }}</td>
+          <td>Submitted By: {{batch.createdBy.username}}</td>
+          <td>
+            <button class="btn btn-md btn-primary" ng-click="shipmentReceived('batch', batch)">Received</button>
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
   <div ng-class="{blackout:!hidePopup}">

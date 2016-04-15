@@ -14,6 +14,9 @@ router.get('/',function(req, res){
 
 router.route('/addNew').post(function(req, res) {
   if (req.user) {
+    req.body.createdBy = req.user;
+    req.body.fulfilled = false;
+    console.log(req.body);
     var batch = new Batch(req.body);
     batch.save(function (err, data) {
       if (err) {
@@ -34,7 +37,7 @@ router.route('/addNew').post(function(req, res) {
 
 router.get('/all',function(req, res){
   if (req.user) {
-    Batch.find(function (err, batch) {
+    Batch.find({}).populate('ingredient').populate('createdBy').exec(function (err, batch) {
       if (err) {
         return next(err)
       }
@@ -45,7 +48,6 @@ router.get('/all',function(req, res){
 
 router.put('/update',function(req, res){
   if (req.user) {
-    console.log(req.body)
     Batch.update({_id: req.body.id}, {$set: req.body}, function (err, vendor) {
       if (err) {
         return res.json({status: 'Error', messages: err.message})
@@ -57,11 +59,40 @@ router.put('/update',function(req, res){
 
 router.delete('/delete', function(req, res){
   if (req.user) {
-    Vendor.remove({_id: req.body.id}, function (err, vendor) {
+    Batch.remove({_id: req.body.id}, function (err, batch) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      return res.status(200).json({status: 'Success', vendor: vendor});
+      return res.status(200).json({status: 'Success', batch: batch});
+    })
+  }
+});
+
+router.get('/outgoing',function(req, res){
+  if (req.user) {
+    Batch.find({ fulfilled: false }).populate('ingredient').populate('createdBy').exec(function (err, batches) {
+        if (err) {
+          return next(err)
+        }
+        res.status(200).json({status: 'Success', batches: batches});
+      });
+  }
+});
+
+router.put('/fulfilled',function(req, res){
+  if (req.user) {
+    Batch.update({_id: req.body._id}, {$set: {fulfilled: true, fulfilledBy: req.user}}, function (err, batch) {
+      if (err) {
+        return res.json({status: 'Error', messages: err.message})
+      }
+      unitConversion(req.body.ingredient._id, batch, function(err, qty){
+        if (err) return err;
+
+        Ingredient.update({_id: req.body.ingredient._id},  {$inc: {quantity: -qty}}, function(err, data){
+          if(err) return res.json({status: 'Error', messages: err.message})
+        });
+      });
+      return res.status(200).json({status: 'Success', batch: batch});
     })
   }
 });
