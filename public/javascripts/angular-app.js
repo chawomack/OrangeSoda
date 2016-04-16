@@ -65,10 +65,10 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
     $scope.showMessage = function(msg, success) {
       $scope.msgHidden = false;
       $scope.msgSuccess = success;
-      $scope.msg = msg.status;
+      $scope.msg = msg;
       $timeout(function(){
         $scope.msgHidden = true;
-      }, 2000)
+      }, 2500)
     }
 }]);
 

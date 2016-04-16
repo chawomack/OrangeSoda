@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require('passport');
 var Batch = require('../models/batch');
 var Ingredient = require('../models/ingredient');
-var unitConversion = require('../API/unitConversion');
+var IngredientService = require('../API/ingredientServices');
 
 router.get('/',function(req, res){
   if (req.user) {
@@ -22,12 +22,17 @@ router.route('/addNew').post(function(req, res) {
       if (err) {
         return res.json({status: 'Error', messages: err.message})
       }
-      unitConversion(req.body.ingredient, batch, function(err, qty){
-        if (err) return err;
 
-        Ingredient.update({_id: req.body.ingredient},  {$inc: {pending_quantity: -qty}}, function(err, data){
-          if(err) return res.json({status: 'Error', messages: err.message})
+
+      IngredientService.unitConversion(req.body.ingredient, batch, function(err, qty){
+        if (err) return res.json({status: 'Error', messages: err.message});
+
+        IngredientService.updatePendingQuantity(req.body.ingredient, -qty, function(err, data){
+          if (err) return res.json({status: 'Error', messages: err.message});
+
+          return data;
         });
+
       });
       return res.status(200).json({status: 'Success', batch: data});
     });
@@ -85,11 +90,13 @@ router.put('/fulfilled',function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message})
       }
-      unitConversion(req.body.ingredient._id, batch, function(err, qty){
+      IngredientService.unitConversion(req.body.ingredient._id, batch, function(err, qty){
         if (err) return err;
 
-        Ingredient.update({_id: req.body.ingredient._id},  {$inc: {quantity: -qty}}, function(err, data){
-          if(err) return res.json({status: 'Error', messages: err.message})
+        IngredientService.updateQuantity(req.body.ingredient, -qty, function(err, data){
+          if (err) return res.json({status: 'Error', messages: err.message});
+
+          return data;
         });
       });
       return res.status(200).json({status: 'Success', batch: batch});

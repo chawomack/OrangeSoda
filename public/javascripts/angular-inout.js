@@ -28,10 +28,10 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
       });
     }
     else {
-      Batch.fulfill($scope.batch).then(function () {
-        $scope.togglePopup();
-        $scope.showMessage(Batch.message, true);
-      });
+      //Batch.fulfill($scope.batch).then(function () {
+      //  $scope.togglePopup();
+      //  $scope.showMessage(Batch.message, true);
+      //});
     }
   };
 
