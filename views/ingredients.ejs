@@ -14,10 +14,13 @@
 
   <div  ng-hide="hideForm">
     <form ng-submit="submit()" class="add-new-form form-inline">
-      <input type="text" name="name" placeholder="ingredient name" ng-model="ingredient.name" class="form-control"/>
-      <input type="text" name="quantity" placeholder="quantity" ng-model="ingredient.quantity" class="form-control"/>
-      <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control"></select>
-      <input type="text" name="warning_quantity" placeholder="warning quantity" ng-model="ingredient.warning_quantity" class="form-control"/>
+      <input type="text" name="name" placeholder="ingredient name" ng-model="ingredient.name" class="form-control" required/>
+      <input type="number" name="quantity" placeholder="quantity" ng-model="ingredient.quantity" class="form-control" required/>
+      <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control" required>
+        <option></option>
+      </select>
+      <input type="number" name="warning_quantity" placeholder="warning quantity" ng-model="ingredient.warning_quantity"
+             required class="form-control"/>
 
       <input type="submit" value="Add New Ingredient" class="btn btn-sm btn-primary"/>
     </form>
@@ -35,21 +38,24 @@
     <tr ng-repeat="ingredient in ingredients">
       <td>
         <input type="text" name="name" value="{{ ingredient.name }}" ng-disabled="!isEditable[$index]"
-                 class="input-sm" ng-model="ingredient.name">
+                 class="input-sm" ng-model="ingredient.name" required>
       </td>
       <td>
-        <input type="text" name="name" value="{{ ingredient.quantity }}" ng-disabled="!isEditable[$index]"
-                 class="input-sm" ng-model="ingredient.quantity"></td>
-      <td>
-        *<input type="text" name="name" value="{{ ingredient.pending_quantity }}" ng-disabled="!isEditable[$index]"
-               class="input-sm" ng-model="ingredient.pending_quantity">
+        <input type="number" name="name" value="{{ ingredient.quantity }}" ng-disabled="!isEditable[$index]"
+                 class="input-sm" ng-model="ingredient.quantity" required>
       </td>
-      <td><input type="text" name="name" value="{{ ingredient.warning_quantity }}" ng-disabled="!isEditable[$index]"
-                 class="input-sm" ng-model="ingredient.warning_quantity">
+      <td>
+        *<input type="number" name="pending_quantity" value="{{ ingredient.pending_quantity }}" ng-disabled="!isEditable[$index]"
+               class="input-sm" ng-model="ingredient.pending_quantity" required>
+      </td>
+      <td><input type="number" name="warning_quantity" value="{{ ingredient.warning_quantity }}" ng-disabled="!isEditable[$index]"
+                 class="input-sm" ng-model="ingredient.warning_quantity" required>
       </td>
       <td>
         <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control"
-                ng-disabled="!isEditable[$index]"></select>
+                ng-disabled="!isEditable[$index]" required>
+          <option></option>
+        </select>
       </td>
       <td ng-hide="deleteMode">
         <a ng-click="editIngredient($index, ingredient)" ng-hide="isEditable[$index]" class="edit-icon"><i class="fa fa-pencil"></i></a>

@@ -12,11 +12,11 @@
   <div id="createUserForm" ng-hide="hideForm">
 
     <form ng-submit="submit()" class="add-new-form form-inline">
-      <input type="text" name="name" placeholder="full name" ng-model="newUser.name" class="form-control"/>
-      <input type="text" name="username" placeholder="username" ng-model="newUser.username" class="form-control"/>
-      <input type="text" name="email" placeholder="email" ng-model="newUser.email" class="form-control"/>
-      <input type="text" name="password" placeholder="password" ng-model="newUser.password" class="form-control"/>
-      <select class="form-control" name="role" ng-model="newUser.role">
+      <input type="text" name="name" placeholder="full name" ng-model="newUser.name" class="form-control" required/>
+      <input type="text" name="username" placeholder="username" ng-model="newUser.username" class="form-control" required/>
+      <input type="text" name="email" placeholder="email" ng-model="newUser.email" class="form-control" required/>
+      <input type="text" name="password" placeholder="password" ng-model="newUser.password" class="form-control" required />
+      <select class="form-control" name="role" ng-model="newUser.role" required>
         <option value="" disabled selected>role</option>
         <option value="admin" class="form-control">admin</option>
         <option value="manager" class="form-control">manager</option>
@@ -48,7 +48,7 @@
       <td>
         <div ng-hide="!isEditable[$index]" class="user-field">
           <i class="fa fa-key" aria-hidden="true"></i>
-          <input name="password" placeholder="password" class="input-sm" ng-model="user.password">
+          <input name="password" placeholder="password" class="input-sm" ng-model="user.password" required>
         </div>
         <div class="user-field">
           <i class="fa fa-envelope-o" aria-hidden="true"></i>
