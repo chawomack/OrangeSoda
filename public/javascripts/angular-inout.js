@@ -5,6 +5,7 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
   $scope.order = "";
   $scope.batch = {};
   $scope.hideForm = true;
+  $scope.batches = [];
 
   $scope.getIncoming = Orders.getIncoming().then(function() {
     $scope.incomingOrders = Orders.data.orders;
@@ -38,7 +39,9 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
   $scope.submit = function() {
     Batch.addNew(this.batch).then(function() {
       $scope.batch = {};
-      $scope.getOutgoingBatches();
+      $scope.showMessage(Batch.message, true);
+      debugger;
+
     })
   };
 
@@ -46,10 +49,9 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
     $scope.ingredients = Ingredients.data.ingredients;
   });
 
-  $scope.getOutgoingBatches = Batch.outgoing().then(function() {
-    $scope.batches = Batch.data.batches;
+  $scope.getOutgoingBatches = Batch.outgoing().then(function () {
+      $scope.batches = Batch.data.batches;
   });
-
 }]);
 
 
@@ -83,7 +85,7 @@ app.factory('Batch', ['$http', '$q', function($http, $q){
     $http.post('/batch/addNew', newBatch)
       .success(function(data) {
         batches.data = data;
-        batches.message = data.status;
+        batches.message = data.messages;
         deferred.resolve();
       });
     return deferred.promise;
@@ -94,7 +96,7 @@ app.factory('Batch', ['$http', '$q', function($http, $q){
     $http.put('/batch/fulfilled', batch)
       .success(function(data) {
         batches.data = data;
-        batches.message = data.status;
+        batches.message = data.messages;
         deferred.resolve();
       });
     return deferred.promise;
