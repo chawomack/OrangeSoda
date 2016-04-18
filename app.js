@@ -15,6 +15,7 @@ var orders = require('./routes/orders');
 var vendors = require('./routes/vendors');
 var inOut = require('./routes/in-out');
 var batch = require('./routes/batches');
+var reports = require('./routes/reports');
 var flash = require('connect-flash');
 var app = express();
 
@@ -60,6 +61,7 @@ app.use('/orders', orders);
 app.use('/vendors', vendors);
 app.use('/inout', inOut);
 app.use('/batch', batch);
+app.use('/reports', reports);
 
 
 // catch 404 and forward to error handler
