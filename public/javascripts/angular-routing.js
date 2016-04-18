@@ -5,6 +5,7 @@ app.config(['$routeProvider', function($routeProvider){
     .when('/', {templateUrl:'login'})
     .when('/crm', {templateUrl:'crm'})
     .when('/vendors', {templateUrl:'vendors'})
+    .when('/reports', {templateUrl:'reports'})
     .when('/users', {
       templateUrl:'users',
       resolve: {
