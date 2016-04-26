@@ -1,4 +1,4 @@
-<div class="h2">Orders- I ain't done!</div>
+<div class="h2">Orders</div>
 <div ng-controller="ordersCtrl">
     <table class="table">
         <tr ng-repeat="order in orders | limitTo: 5">
@@ -10,38 +10,37 @@
             <td>Order Date: {{order.date}}</td>
             <td>Shipper: {{order.shipping.shipper}} </td>
             <td>Tracking Id: {{order.shipping.trackingNumber}}</td>
-            <!--<td>Fulfilled: {{order.fulfilled}}</td>-->
         </tr>
     </table>
 </div>
 
 
 <!--Create new Order-->
-<form action="/orders" role="form">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Ingredient">
-    </div>
+<!--<form action="/orders" role="form">-->
+    <!--<div class="form-group">-->
+        <!--<input type="text" class="form-control" placeholder="Ingredient">-->
+    <!--</div>-->
 
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="$ Total Cost">
-        <input type="number" min="0" class="form-control" placeholder="Quantity">
-        <input type="text" class="form-control" placeholder="Units">
-        <input type="text" class="form-control" placeholder="Vendor">
-    </div>
+    <!--<div class="form-group">-->
+        <!--<input type="text" class="form-control" placeholder="$ Total Cost">-->
+        <!--<input type="number" min="0" class="form-control" placeholder="Quantity">-->
+        <!--<input type="text" class="form-control" placeholder="Units">-->
+        <!--<input type="text" class="form-control" placeholder="Vendor">-->
+    <!--</div>-->
 
-    <h4>Shipping</h4>
-    <div class="form-group form-inline">
-        <input type="text" class="form-control" placeholder="Shipper">
-        <input type="text" class="form-control" placeholder="Tracking">
+    <!--<h4>Shipping</h4>-->
+    <!--<div class="form-group form-inline">-->
+        <!--<input type="text" class="form-control" placeholder="Shipper">-->
+        <!--<input type="text" class="form-control" placeholder="Tracking">-->
 
-    </div>
+    <!--</div>-->
 
-    <h4>Fulfillment</h4>
-    <div class="form-group form-inline">
-        <input type="text" class="form-control" placeholder="">
-        <input type="text" class="form-control" placeholder="">
-        <input type="text" class="form-control" placeholder="S">
-    </div>
+    <!--<h4>Fulfillment</h4>-->
+    <!--<div class="form-group form-inline">-->
+        <!--<input type="text" class="form-control" placeholder="">-->
+        <!--<input type="text" class="form-control" placeholder="">-->
+        <!--<input type="text" class="form-control" placeholder="S">-->
+    <!--</div>-->
 
     <!--<div class="form-group">-->
         <!--<input type="text" class="form-control" placeholder="">-->
