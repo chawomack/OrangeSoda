@@ -5,6 +5,7 @@ var Batch = require('../models/batch');
 var Ingredient = require('../models/ingredient');
 var IngredientService = require('../API/ingredientServices');
 
+
 router.get('/',function(req, res){
   if (req.user) {
     res.render('batches', {title: 'Batch', messages: req.flash()});
@@ -34,7 +35,7 @@ router.route('/addNew').post(function(req, res) {
         });
 
       });
-      return res.status(200).json({status: 'Success', batch: data});
+      return res.status(200).json({status: 'Success', batch: data, messages: "This batch was successfully added!"});
     });
 
   }
@@ -57,7 +58,7 @@ router.put('/update',function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message})
       }
-      return res.status(200).json({status: 'Success', vendor: vendor});
+      return res.status(200).json({status: 'Success', vendor: vendor, messages: "This batch was successfully updated!"});
     })
   }
 });
@@ -68,7 +69,7 @@ router.delete('/delete', function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      return res.status(200).json({status: 'Success', batch: batch});
+      return res.status(200).json({status: 'Success', batch: batch, messages: "This batch was successfully deleted!"});
     })
   }
 });
@@ -86,20 +87,20 @@ router.get('/outgoing',function(req, res){
 
 router.put('/fulfilled',function(req, res){
   if (req.user) {
-    Batch.update({_id: req.body._id}, {$set: {fulfilled: true, fulfilledBy: req.user}}, function (err, batch) {
+    Batch.findOneAndUpdate({ "_id": req.body._id}, { $set: {"fulfilled": true, "fulfilledBy": req.user} }, function (err, batch) {
       if (err) {
         return res.json({status: 'Error', messages: err.message})
       }
       IngredientService.unitConversion(req.body.ingredient._id, batch, function(err, qty){
         if (err) return err;
-
+        console.log(qty);
         IngredientService.updateQuantity(req.body.ingredient, -qty, function(err, data){
           if (err) return res.json({status: 'Error', messages: err.message});
 
           return data;
         });
       });
-      return res.status(200).json({status: 'Success', batch: batch});
+      return res.status(200).json({status: 'Success', batch: batch, messages: "This batch was successfully fulfilled!"});
     })
   }
 });
