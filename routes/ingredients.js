@@ -2,23 +2,24 @@ var express = require('express');
 var router = express.Router();
 var Ingredient = require('../models/ingredient');
 
-router.route('/')
-  .get(function(req, res){
+router.get('/', function(req, res){
     if (req.user) {
       res.render('ingredients', {title: 'Ingredients', messages: req.flash()});
     }
-  })
-  .post(function(req, res){
+});
+
+router.post('/addNew', function(req, res){
     if (req.user) {
-    var ingredient = new Ingredient(req.body);
-    ingredient.save(function (err, data) {
-        if (err) {
-          return res.json({status: 'Error', messages: err.message})
-        }
-        return res.status(200).json({status: 'Success', ingredient: data});
+      req.body.pending_quantity = req.body.quantity;
+      var ingredient = new Ingredient(req.body);
+      ingredient.save(function (err, data) {
+          if (err) {
+            return res.json({status: 'Error', messages: err.message})
+          }
+          return res.status(200).json({status: 'Success', ingredient: data});
       });
     }
-  });
+});
 
 //router.route('/:id').get(function(req, res, next){
 //  Ingredient.findOne({_id: req.params.id}, function(err, data) {
@@ -30,7 +31,7 @@ router.route('/')
 //  });
 //});
 
-router.route('/all').get(function(req, res){
+router.get('/all', function(req, res){
   Ingredient.find(function(err, ingredients){
     if (err) {
       return res.json({status: 'Error', messages: err.message})
@@ -41,7 +42,7 @@ router.route('/all').get(function(req, res){
 
 router.put('/update', function(req, res){
   if (req.user) {
-    Ingredient.update({_id: req.body.id}, {$set: req.body}, function (err, ingredient) {
+    Ingredient.update({_id: req.body._id}, {$set: req.body}, function (err, ingredient) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
@@ -51,7 +52,7 @@ router.put('/update', function(req, res){
 });
 router.delete('/delete', function(req, res){
   if (req.user) {
-    Ingredient.remove({_id: req.body.id}, function (err, ingredient) {
+    Ingredient.remove({_id: req.body._id}, function (err, ingredient) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }

@@ -1,10 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
+var convertUnits = require('convert-units');
 var Order = require('../models/order');
 var Ingredient = require('../models/ingredient');
 var Vendor = require('../models/vendor');
-
+var unitConversion = require('../API/unitConversion');
 
 router.get('/',function(req, res){
   if (req.user) {
@@ -30,11 +31,17 @@ router.route('/addNew')
           return res.json({status: 'Error', messages: err.message})
         }
         //// adds order to ingredient document
-        Ingredient.update({_id: req.body.ingredient}, { $addToSet: {orders: order._id},
-          $inc:{pending_quantity: order.quantity} },  function(err, ingredient){
-          if (err) {
-            return res.json({status: 'Error', messages: err.message})
-          }
+        unitConversion(req.body.ingredient, order, function(err, qty){
+          if (err)
+            return res.json({status: 'Error', messages: err.message});
+
+          Ingredient.update({_id: req.body.ingredient}, { $addToSet: {orders: order._id},
+            $inc:{pending_quantity: qty} },  function(err, ingredient){
+            if (err) {
+              return res.json({status: 'Error', messages: err.message})
+            }
+          });
+
         });
 
         // adds order to vendor document
@@ -89,10 +96,15 @@ router.post('/fulfilled', function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(req.body.quantity)}},
-      function(err, ingredient){
+      unitConversion(req.body.ingredient,req.body, function(err, qty){
         if (err)
           return res.json({status: 'Error', messages: err.message})
+
+        Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(qty)}},
+          function(err, ingredient){
+            if (err)
+              return res.json({status: 'Error', messages: err.message})
+          });
       });
       res.status(200).json({status: 'Success', order: order});
     });

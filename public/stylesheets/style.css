@@ -27,10 +27,6 @@ a {
     text-decoration: underline;
 }
 
-#users-table input[disabled] {
-    border: none;
-}
-
 .edit-icon {
     color: #00B7FF;
 }
@@ -84,6 +80,9 @@ a {
 .crm-table .user {
     display:block;
     margin-bottom: 10px;
+}
+.crm-table input[disabled] {
+    border: none;
 }
 .user-field {
     margin: 10px 0;

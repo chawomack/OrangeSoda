@@ -12,6 +12,14 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
       {name: 'Reports', path: '/#/reports'}
     ];
 
+    $scope.units = [
+      {name: 'milligrams', value: 'mg'},
+      {name: 'grams', value: 'g'},
+      {name: 'kilograms', value: 'kg'},
+      {name: 'milliliter', value: 'ml'},
+      {name: 'liter', value: 'ltr'}
+    ];
+
     $scope.user = {};
     $scope.login = {};
     $scope.loggedIn = false;
@@ -49,14 +57,18 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
     $scope.togglePopup = function() {
       $scope.hidePopup = !$scope.hidePopup;
     };
+    $scope.toggleForm = function(hidden) {
+      debugger;
+      this.hideForm = !hidden;
+    };
 
     $scope.showMessage = function(msg, success) {
       $scope.msgHidden = false;
       $scope.msgSuccess = success;
-      $scope.msg = msg.status;
+      $scope.msg = msg;
       $timeout(function(){
         $scope.msgHidden = true;
-      }, 2000)
+      }, 2500)
     }
 }]);
 

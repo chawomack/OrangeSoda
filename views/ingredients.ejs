@@ -1,11 +1,85 @@
-<h1><%=title %></h1>
+
 <div ng-controller="ingredientsCtrl">
-  <table class="table" >
+  <div class="delete">
+    <a ng-click="toggleDelete()" ng-hide="deleteMode"><i class="fa fa-trash" aria-hidden="true"></i> Delete Ingredient</a>
+    <a ng-click="toggleDelete()" ng-hide="!deleteMode" class="cancel">Cancel</a>
+  </div>
+
+  <h1>Ingredients</h1>
+
+  <div class="add-new">
+    <a ng-click="toggleForm(hideForm)"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}' aria-hidden="true"></i>
+      add ingredient</a>
+  </div>
+
+  <div  ng-hide="hideForm">
+    <form ng-submit="submit()" class="add-new-form form-inline">
+      <input type="text" name="name" placeholder="ingredient name" ng-model="ingredient.name" class="form-control" required/>
+      <input type="number" name="quantity" placeholder="quantity" ng-model="ingredient.quantity" class="form-control" required/>
+      <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control" required>
+        <option></option>
+      </select>
+      <input type="number" name="warning_quantity" placeholder="warning quantity" ng-model="ingredient.warning_quantity"
+             required class="form-control"/>
+
+      <input type="submit" value="Add New Ingredient" class="btn btn-sm btn-primary"/>
+    </form>
+  </div>
+  <table class="crm-table table" >
+    <thead>
+    <th>Name</th>
+    <th>In Stock Quantity</th>
+    <th>Pending Quantity</th>
+    <th>Warning Quantity</th>
+    <th>Units</th>
+    <th ng-hide="deleteMode">Edit</th>
+    <th ng-hide="!deleteMode">Delete</th>
+    </thead>
     <tr ng-repeat="ingredient in ingredients">
-      <td>Name:{{ ingredient.name }}</td>
-      <td>Quantity:{{ ingredient.quantity }}</td>
-      <td>*Pending Quantity:{{ ingredient.pending_quantity }}</td>
-      <td>Warning Quantity:{{ ingredient.warning_quantity }}</td>
+      <td>
+        <input type="text" name="name" value="{{ ingredient.name }}" ng-disabled="!isEditable[$index]"
+                 class="input-sm" ng-model="ingredient.name" required>
+      </td>
+      <td>
+        <input type="number" name="name" value="{{ ingredient.quantity }}" ng-disabled="!isEditable[$index]"
+                 class="input-sm" ng-model="ingredient.quantity" required>
+      </td>
+      <td>
+        *<input type="number" name="pending_quantity" value="{{ ingredient.pending_quantity }}" ng-disabled="!isEditable[$index]"
+               class="input-sm" ng-model="ingredient.pending_quantity" required>
+      </td>
+      <td><input type="number" name="warning_quantity" value="{{ ingredient.warning_quantity }}" ng-disabled="!isEditable[$index]"
+                 class="input-sm" ng-model="ingredient.warning_quantity" required>
+      </td>
+      <td>
+        <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control"
+                ng-disabled="!isEditable[$index]" required>
+          <option></option>
+        </select>
+      </td>
+      <td ng-hide="deleteMode">
+        <a ng-click="editIngredient($index, ingredient)" ng-hide="isEditable[$index]" class="edit-icon"><i class="fa fa-pencil"></i></a>
+        <a ng-hide="!isEditable[$index]" ng-click="cancel($index)" class=""><i class="fa fa-times"
+                                                                               aria-hidden="true"></i></a>
+        <a ng-click="saveEdits(ingredient)" ng-hide="!isEditable[$index]"><i class="fa fa-floppy-o"
+                                                                       aria-hidden="true"></i></a>
+      </td>
+      <td ng-hide="!deleteMode">
+        <a ng-click="deleteIngredient(ingredient)" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
+      </td>
+    </tr>
     </tr>
   </table>
+
+  <div ng-class="{blackout:!hidePopup}">
+    <div class="panel-warning confirm-popup" ng-hide="hidePopup">
+      <div class="panel-heading">
+        <a ng-click="togglePopup()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      </div>
+      <div class="panel-body">
+        <h5>Are you sure you want to delete this ingredient? </h5>
+        <button class="btn btn-warning" ng-click="confirmDelete()">Confirm</button>
+      </div>
+    </div>
+  </div>
 </div>
