@@ -2,13 +2,13 @@
 <div ng-controller="ordersCtrl">
     <table class="table">
         <thead>
-            <th>Quantity</th>
-            <th>Total</th>
-            <th>Vendor</th>
-            <th>Placed By</th>
-            <th>Order Date</th>
-            <th>Shipper</th>
-            <th>Tracking Id</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Vendor</th>
+        <th>Placed By</th>
+        <th>Order Date</th>
+        <th>Shipper</th>
+        <th>Tracking Id</th>
         </thead>
         <tr ng-repeat="order in orders">
             <td>{{order.quantity}} {{order.unit}}</td>
@@ -20,22 +20,27 @@
             <td>{{order.shipping.trackingNumber}}</td>
         </tr>
     </table>
+
+
+    <h3>Place Order</h3>
+    <form action="/orders" role="form">
+        <div class="form-group">
+            <select
+                    ng-options="ingredient as ingredient.name for ingredient in ingredients track by ingredient.name"
+                    ng-model="selected"></select>
+
+        </div>
+
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="$ Total Cost">
+            <input type="number" min="0" class="form-control" placeholder="Quantity">
+            <input type="text" class="form-control" placeholder="Units">
+            <input type="text" class="form-control" placeholder="Vendor">
+        </div>
+    </form>
+
 </div>
-
-
-<h3>Place Order</h3>
-<form action="/orders" role="form">
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="Ingredient">
-    </div>
-
-    <div class="form-group">
-        <input type="text" class="form-control" placeholder="$ Total Cost">
-        <input type="number" min="0" class="form-control" placeholder="Quantity">
-        <input type="text" class="form-control" placeholder="Units">
-        <input type="text" class="form-control" placeholder="Vendor">
-    </div>
-</form>
+<!--End of Controller Scope-->
 
 <!--<h4>Shipping</h4>-->
 <!--<div class="form-group form-inline">-->

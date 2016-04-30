@@ -1,6 +1,6 @@
 var app = angular.module('CRM');
 
-app.controller('ordersCtrl', ['$scope', 'Orders', function ($scope, Orders) {
+app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', function ($scope, Orders, Ingredients) {
 
     $scope.getAllOrders = Orders.getAll().then(function () {
         $scope.orders = Orders.data.orders;
@@ -11,6 +11,12 @@ app.controller('ordersCtrl', ['$scope', 'Orders', function ($scope, Orders) {
     //$scope.confirmShipment = Orders.confirmShipment(order).then(function () {
     //    $scope.orders = Orders.data.orders;
     //});
+
+    $scope.getAllIngredients = Ingredients.getAll().then(function () {
+        $scope.ingredients = Ingredients.data.ingredients;
+        $scope.selected = $scope.ingredients[0];
+    });
+
 }]);
 
 app.factory('Orders', ['$http', '$q', function ($http, $q) {
