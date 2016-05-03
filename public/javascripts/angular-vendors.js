@@ -73,6 +73,7 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
         var deferred = $q.defer();
         $http.get('/vendors/all')
             .success(function(data) {
+                debugger;
                 vendors.data = data;
                 deferred.resolve();
             });

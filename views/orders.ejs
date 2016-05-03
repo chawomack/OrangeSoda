@@ -42,7 +42,10 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="">Units</label>
-                                <input type="text" class="form-control" ng-model="order.units">
+                                <select name="units" id="units" class="form-control">
+                                    <option value="{{unit.value}}" ng-repeat="unit in units" ng-model="order.unit">{{unit.value}}</option>
+                                </select>
+                                <!--<input type="text" class="form-control" ng-model="order.units">-->
                             </div>
 
                             <div class="form-group col-md-4 col-md-offset-2">
@@ -83,7 +86,17 @@
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 col-md-offset-4">
+                            <div class="form-group col-md-4 col-md-offset-1">
+                                <label for="vendor">Vendor</label>
+                                <select name="vendor" id="vendor" class="form-control">
+                                    <option value="{{vendor}}" ng-repeat="vendor in vendors" ng-model="order.vendor">
+                                        {{vendor.company}}
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 col-md-offset-2">
+
                                 <button type="submit" class="btn btn-block btn-primary">Add New Order</button>
                             </div>
                         </div>
@@ -93,7 +106,7 @@
         </div>
     </div>
 
-    <table class="table">
+    <table class="crm-table table">
         <thead>
         <th>Ingredient</th>
         <th>Quantity</th>
@@ -103,6 +116,7 @@
         <th>Order Date</th>
         <th>Shipper</th>
         <th>Tracking Id</th>
+        <th>Edit</th>
         </thead>
         <tr ng-repeat="order in orders">
             <td>
@@ -146,6 +160,17 @@
                 <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
                        class="form-control"
                        ng-model="order.shipping.trackingNumber">
+            </td>
+
+            <td ng-hide="deleteMode">
+                <a ng-click="editOrder($index, order)" ng-hide="isEditable[$index]" class="edit-icon"><i class="fa fa-pencil"></i></a>
+                <a ng-hide="!isEditable[$index]" ng-click="cancel($index)" class=""><i class="fa fa-times"
+                                                                                       aria-hidden="true"></i></a>
+                <a ng-click="saveEdits(ingredient)" ng-hide="!isEditable[$index]"><i class="fa fa-floppy-o"
+                                                                                     aria-hidden="true"></i></a>
+            </td>
+            <td ng-hide="!deleteMode">
+                <a ng-click="deleteOrder(order)" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
             </td>
         </tr>
     </table>
