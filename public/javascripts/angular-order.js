@@ -24,6 +24,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.getAllOrders = Orders.getAll().then(function () {
             $scope.orders = Orders.data.orders;
             for (var i = 0; i < $scope.orders.length; i++) {
+                alert(Object.keys($scope.orders[i]));
                 var date = new Date($scope.orders[i].date);
                 $scope.orders[i].date = date;
                 $scope.isEditable[i] = false;
@@ -45,6 +46,13 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.getAllVendors = Vendors.getAll().then(function () {
             $scope.vendors = Vendors.data.vendors;
         });
+
+        $scope.getObjectById = function(id, list) {
+          list.forEach(function(object, index, array) {
+            if (id == object._id)
+                return Object.keys(object);
+          });
+        };
 
         $scope.toggleDelete = function () {
             $scope.deleteMode = !$scope.deleteMode;

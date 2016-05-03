@@ -73,15 +73,15 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="tracking">Tracking Id</label>
-                                <input class="form-control" type="text" id="tracking" ng-model="order.shipping.trackingNumber">
+                                <input class="form-control" type="text" id="tracking"
+                                       ng-model="order.shipping.trackingNumber">
                             </div>
 
                             <!--FULFILLMENT-->
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="orderedBy">Ordered By</label>
                                 <select name="orderedBy" id="orderedBy" class="form-control">
-                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy"
-                                    ng-selected="$index == 0">
+                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
                                         {{user.name}}
                                     </option>
                                 </select>
@@ -91,7 +91,7 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="vendor">Vendor</label>
-                                <select name="vendor" id="vendor" class="form-control" >
+                                <select name="vendor" id="vendor" class="form-control">
                                     <option value="{{vendor}}" ng-repeat="vendor in vendors"
                                             ng-model="order.vendor">
                                         {{vendor.company}}
@@ -137,25 +137,29 @@
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
-                <input type="text" name="cost" value="${{order.ingredientTotalCost}}"
+                <input type="text" name="cost" placeholder="{{order.ingredientTotalCost}}"
                        class="input-sm"
                        ng-model="order.ingredientTotalCost"
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
                 <!--<input type="text" name="vendor" value="{{order.vendor}}"-->
-                       <!--class="input-sm"-->
-                       <!--ng-model="order.vendor"-->
-                       <!--ng-disabled="!isEditable[$index]">-->
+                <!--class="input-sm"-->
+                <!--ng-model="order.vendor"-->
+                <!--ng-disabled="!isEditable[$index]">-->
                 <select name="selectVendor" id="vendorSelect" class="input-sm" ng-disabled="!isEditable[$index]">
                     <option value="{{vendor}}" ng-repeat="vendor in vendors"
-                        ng-selected="vendor._id == order.vendor._id">{{vendor.company}}</option>
+                            ng-selected="order.vendor == vendor._id">{{vendor.company}}
+                    </option>
                 </select>
             </td>
             <td>
                 <select name="placedBy" id="placedBy" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{user}}" ng-repeat="user in users" ng-selected="order.placedBy._id == user._id">{{user.name}}</option>
+                    <option value="{{user}}" ng-repeat="user in users"
+                            ng-selected="order.placedBy == user._id">{{user.name}}
+                    </option>
                 </select>
+
             </td>
             <td>
                 <input type="date" name="date"
