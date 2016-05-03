@@ -11,56 +11,104 @@
         <th>Tracking Id</th>
         </thead>
         <tr ng-repeat="order in orders">
-            <td>{{order.quantity}} {{order.unit}}</td>
-            <td>${{order.ingredientTotalCost}}</td>
-            <td>{{order.vendor}}</td>
-            <td>{{order.placedBy}}</td>
-            <td>{{order.date}}</td>
-            <td>{{order.shipping.shipper}}</td>
-            <td>{{order.shipping.trackingNumber}}</td>
+            <td>
+                <input type="number" name="quantity" value="{{order.quantity}}"
+                       class="input-sm"
+                       ng-model="order.quantity">
+            </td>
+            <td>
+                <input type="text" name="cost" value="${{order.ingredientTotalCost}}"
+                       class="input-sm"
+                       ng-model="order.ingredientTotalCost">
+            </td>
+            <td>
+                <input type="text" name="vendor" value="{{order.vendor}}"
+                       class="input-sm"
+                       ng-model="order.vendor">
+            </td>
+            <td>
+                <input type="text" name="placedBy" value="{{order.placedBy}}"
+                       class="input-sm"
+                       ng-model="order.placedBy">
+            </td>
+            <td>
+                <input type="date" name="date" value="{{order.date}}"
+                       class="input-sm"
+                       ng-model="order.date">
+            </td>
+            <td>
+                <input type="text" name="shipper" value="{{order.shipping.shipper}}"
+                       class="input-sm"
+                       ng-model="order.shipping.shipper">
+            </td>
+            <td>
+                <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
+                       class="input-sm"
+                       ng-model="order.shipping.shipper">
+            </td>
         </tr>
     </table>
 
 
-    <h3>Place Order</h3>
-    <form action="/orders" role="form">
-        <div class="form-group">
-            <select
-                    ng-options="ingredient as ingredient.name for ingredient in ingredients track by ingredient.name"
-                    ng-model="selected"></select>
-
+    <!--ADD ORDER-->
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Add Order</div>
         </div>
 
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="$ Total Cost">
-            <input type="number" min="0" class="form-control" placeholder="Quantity">
-            <input type="text" class="form-control" placeholder="Units">
-            <input type="text" class="form-control" placeholder="Vendor">
-        </div>
-    </form>
+        <div class="panel-body">
+            <form action="/orders" role="form">
+                <div class="form-group">
+                    <label for="ingredient">Ingredient</label>
+                    <select name="ingredient" id="ingredient" ng-model="selectedIngredient">
+                        <option class="selectpicker" value="ingredient.name" ng-repeat="ingredient in ingredients">
+                            {{ingredient.name}}
+                        </option>
+                    </select>
+                </div>
 
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" class="form-control" min=0 ng-model="quantity">
+                </div>
+
+                <div class="form-group">
+                    <label for="">Units</label>
+                    <input type="text" class="form-control" ng-model="units">
+                </div>
+                <div class="form-group">
+                    <label for="cost">Total Cost</label>
+                    <input type="text" id="cost" class="form-control" ng-model="totalCost">
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" class="form-control" ng-model="date">
+                </div>
+
+
+                <!--SHIPPING INFO-->
+                <div class="panel-body">
+                    <div class="form-group">
+                        <label for="shipper">Shipper</label>
+                        <input type="text" id="shipper" class="form-control" ng-model="shipper">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tracking">Tracking Id</label>
+                        <input type="text" id="tracking" ng-model="trackingNumber">
+                    </div>
+
+
+                    <!--FULFILLMENT-->
+                    <div class="form-group">
+                        <label for="tracking">Tracking Id</label>
+                        <input type="text" id="tracking" ng-model="trackingNumber">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Enter Order</button>
+            </form>
+        </div>
+    </div> <!--End of Controller Scope-->
 </div>
-<!--End of Controller Scope-->
-
-<!--<h4>Shipping</h4>-->
-<!--<div class="form-group form-inline">-->
-<!--<input type="text" class="form-control" placeholder="Shipper">-->
-<!--<input type="text" class="form-control" placeholder="Tracking">-->
-
-<!--</div>-->
-
-<!--<h4>Fulfillment</h4>-->
-<!--<div class="form-group form-inline">-->
-<!--<input type="text" class="form-control" placeholder="">-->
-<!--<input type="text" class="form-control" placeholder="">-->
-<!--<input type="text" class="form-control" placeholder="S">-->
-<!--</div>-->
-
-<!--<div class="form-group">-->
-<!--<input type="text" class="form-control" placeholder="">-->
-<!--</div>-->
-
-<!--<div class="form-group">-->
-<!--<input type="text" class="form-control" placeholder="">-->
-<!--</div>-->
-<!--</form>-->
