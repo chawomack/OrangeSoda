@@ -9,7 +9,6 @@ app.controller('vendorsCtrl', ['$scope', 'Vendors', function($scope, Vendors){
     $scope.deleteMode = false;
 
     $scope.getAllVendors = Vendors.getAll().then(function(){
-        debugger;
         $scope.vendors =  Vendors.data.vendors;
         for(var i = 0; i < $scope.vendors.length; i++)
             $scope.isEditable[i] = false;
@@ -26,7 +25,6 @@ app.controller('vendorsCtrl', ['$scope', 'Vendors', function($scope, Vendors){
             if($scope.editedVendor.key == vendorData.key && key != '_id')
                 delete vendorData.key;
         }
-        debugger;
         Vendors.update(vendorData).then(function() {
             $scope.isEditable[$scope.editedVendor.index] = false;
             $scope.editedVendor = {};
@@ -56,10 +54,8 @@ app.controller('vendorsCtrl', ['$scope', 'Vendors', function($scope, Vendors){
     };
 
     $scope.confirmDelete = function() {
-        debugger;
         Vendors.deleteVendor($scope.deletedVendor).then(function() {
             $scope.togglePopup();
-            debugger;
             $scope.showMessage("This vendor was deleted.", true);
             $scope.deletedVendor = {};
         });
@@ -73,7 +69,6 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
         var deferred = $q.defer();
         $http.get('/vendors/all')
             .success(function(data) {
-                debugger;
                 vendors.data = data;
                 deferred.resolve();
             });
@@ -85,7 +80,6 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
         $http.post('/vendors/addNew', newVendor)
             .success(function(data) {
                 vendors.data = data;
-                debugger;
                 vendors.message = data.status;
                 deferred.resolve();
             });
@@ -111,7 +105,6 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
         var deferred = $q.defer();
         $http.put('/vendors/update', vendor)
             .success(function(data) {
-                debugger;
                 vendors.data = data;
                 vendors.message = data.status;
                 deferred.resolve();

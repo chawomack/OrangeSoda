@@ -25,7 +25,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
             $scope.orders = Orders.data.orders;
             for (var i = 0; i < $scope.orders.length; i++) {
                 var date = new Date($scope.orders[i].date);
-                $scope.orders[i].date = date.toLocaleString();
+                $scope.orders[i].date = date;
                 $scope.isEditable[i] = false;
             }
         });
