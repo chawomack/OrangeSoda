@@ -85,60 +85,60 @@
         </div>
     </div>
 
-    <!--<table class="table">-->
-        <!--<thead>-->
-        <!--<th>Ingredient</th>-->
-        <!--<th>Quantity</th>-->
-        <!--<th>Total</th>-->
-        <!--<th>Vendor</th>-->
-        <!--<th>Placed By</th>-->
-        <!--<th>Order Date</th>-->
-        <!--<th>Shipper</th>-->
-        <!--<th>Tracking Id</th>-->
-        <!--</thead>-->
-        <!--<tr ng-repeat="order in orders">-->
-            <!--<td>-->
-                <!--<select class="form-control sm" name="ingredients">-->
-                    <!--<option value="{{ingredient}}" ng-repeat="ingredient in ingredients">-->
-                        <!--{{ingredient.name}}-->
-                    <!--</option>-->
-                <!--</select>-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="number" name="quantity" id="quantity" value="{{order.quantity}}"-->
-                       <!--class="form-control sm"-->
-                       <!--ng-model="order.quantity">-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="text" name="cost" value="${{order.ingredientTotalCost}}"-->
-                       <!--class="form-control sm"-->
-                       <!--ng-model="order.ingredientTotalCost">-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="text" name="vendor" value="{{order.vendor}}"-->
-                       <!--class="form-control"-->
-                       <!--ng-model="order.vendor">-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<select name="placedBy" id="placedBy" class="form-control">-->
-                    <!--<option value="{{user.username}}" ng-repeat="user in users">{{user.name}}</option>-->
-                <!--</select>-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="date" name="date" value="{{order.date}}"-->
-                       <!--class="form-control sm"-->
-                       <!--ng-model="order.date">-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="text" name="shipper" value="{{order.shipping.shipper}}"-->
-                       <!--class="form-control"-->
-                       <!--ng-model="order.shipping.shipper">-->
-            <!--</td>-->
-            <!--<td>-->
-                <!--<input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"-->
-                       <!--class="form-control"-->
-                       <!--ng-model="order.shipping.shipper">-->
-            <!--</td>-->
-        <!--</tr>-->
-    <!--</table>-->
+    <table class="table">
+        <thead>
+        <th>Ingredient</th>
+        <th>Quantity</th>
+        <th>Total</th>
+        <th>Vendor</th>
+        <th>Placed By</th>
+        <th>Order Date</th>
+        <th>Shipper</th>
+        <th>Tracking Id</th>
+        </thead>
+        <tr ng-repeat="order in orders">
+            <td>
+                <select class="form-control sm" name="ingredients">
+                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
+                        {{ingredient.name}}
+                    </option>
+                </select>
+            </td>
+            <td>
+                <input type="number" name="quantity" id="quantity" value="{{order.quantity}}"
+                       class="form-control sm"
+                       ng-model="order.quantity">
+            </td>
+            <td>
+                <input type="text" name="cost" value="${{order.ingredientTotalCost}}"
+                       class="form-control sm"
+                       ng-model="order.ingredientTotalCost">
+            </td>
+            <td>
+                <input type="text" name="vendor" value="{{order.vendor}}"
+                       class="form-control"
+                       ng-model="order.vendor">
+            </td>
+            <td>
+                <select name="placedBy" id="placedBy" class="form-control">
+                    <option value="{{user.username}}" ng-repeat="user in users">{{user.name}}</option>
+                </select>
+            </td>
+            <td>
+                <input type="date" name="date" value="{{order.date}}"
+                       class="form-control sm"
+                       ng-model="order.date">
+            </td>
+            <td>
+                <input type="text" name="shipper" value="{{order.shipping.shipper}}"
+                       class="form-control"
+                       ng-model="order.shipping.shipper">
+            </td>
+            <td>
+                <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
+                       class="form-control"
+                       ng-model="order.shipping.trackingNumber">
+            </td>
+        </tr>
+    </table>
 </div>  <!--End of Controller Scope-->
