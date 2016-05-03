@@ -5,9 +5,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.hideForm = true;
         $scope.deleteMode = false;
         $scope.hideForm = true;
-        $scope.order = {
-            shipping: {}
-        };
+        $scope.order = { shipping: {} };
         $scope.editedOrder = {};
         $scope.deletedOrder = {};
         $scope.isEditable = [];
@@ -24,7 +22,6 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.getAllOrders = Orders.getAll().then(function () {
             $scope.orders = Orders.data.orders;
             for (var i = 0; i < $scope.orders.length; i++) {
-                alert(Object.keys($scope.orders[i]));
                 var date = new Date($scope.orders[i].date);
                 $scope.orders[i].date = date;
                 $scope.isEditable[i] = false;

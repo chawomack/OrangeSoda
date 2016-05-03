@@ -125,7 +125,8 @@
         <tr ng-repeat="order in orders">
             <td>
                 <select class="input-sm" name="ingredients" ng-disabled="!isEditable[$index]">
-                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
+                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients"
+                    ng-selected="order.ingredient == ingredient._id">
                         {{ingredient.name}}
                     </option>
                 </select>
@@ -143,10 +144,6 @@
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
-                <!--<input type="text" name="vendor" value="{{order.vendor}}"-->
-                <!--class="input-sm"-->
-                <!--ng-model="order.vendor"-->
-                <!--ng-disabled="!isEditable[$index]">-->
                 <select name="selectVendor" id="vendorSelect" class="input-sm" ng-disabled="!isEditable[$index]">
                     <option value="{{vendor}}" ng-repeat="vendor in vendors"
                             ng-selected="order.vendor == vendor._id">{{vendor.company}}
