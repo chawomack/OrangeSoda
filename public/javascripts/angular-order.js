@@ -3,6 +3,8 @@ var app = angular.module('CRM');
 app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendors',
     function ($scope, Orders, Ingredients, Users, Vendors) {
         $scope.hideForm = true;
+        $scope.deleteMode = false;
+        $scope.hideForm = true;
         $scope.order = {};
         $scope.editedOrder = {};
         $scope.deletedOrder = {};
@@ -19,8 +21,8 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
 
         $scope.getAllOrders = Orders.getAll().then(function () {
             $scope.orders = Orders.data.orders;
-            for(var i = 0; i < $scope.orders.length; i++) {
-                $scope.isEditable = false;
+            for (var i = 0; i < $scope.orders.length; i++) {
+                $scope.isEditable[i] = false;
             }
         });
 
@@ -51,47 +53,50 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
             });
         };
 
-        $scope.editOrder = function(index, order) {
-            alert("bitch");
+        $scope.editOrder = function (index, order) {
             $scope.isEditable[index] = true;
             $scope.editedOrder = angular.copy(order);
             $scope.editedOrder.index = index;
         };
 
-        $scope.saveEdits = function(orderData) {
+        $scope.saveEdits = function (orderData) {
             for (var key in orderData) {
-                if($scope.editedOrder.key == orderData.key && key != '_id')
+                if ($scope.editedOrder.key == orderData.key && key != '_id')
                     delete orderData.key;
             }
-            Orders.update(orderData).then(function() {
+            Orders.update(orderData).then(function () {
                 $scope.isEditable[$scope.editedOrder.index] = false;
                 $scope.editedOrder = {};
-                $scope.showMessage(Orders.message, true)
+                $scope.showMessage(Orders.message, true);
             });
         };
 
-        $scope.cancel = function(index) {
+        $scope.cancel = function (index) {
             $scope.isEditable[index] = false;
-            $scope.editedOrder= {};
+            $scope.editedOrder = {};
         };
 
         $scope.deleteOrder = function (order) {
+            alert("delete clicked");
             $scope.deletedOrder = order;
             $scope.togglePopup();
         };
 
         $scope.confirmDelete = function () {
             Orders.deleteOrder($scope.deletedOrder).then(function () {
+                debugger;
+                alert("Delete exectuted");
                 $scope.togglePopup();
                 $scope.showMessage("This order was deleted.", true);
                 $scope.deletedOrder = {};
             });
         };
 
-        // $scope.formatDate = function(date) {
-        //     var date = new Date(date);
-        //     return date.toLocaleDateString();
-        // }
+        $scope.dateFormatter = function (dateStr) {
+            var date = new Date(dateStr);
+            return date.toLocaleString() + " at " + date.toLocaleTimeString();
+        };
+
     }]);
 
 app.factory('Orders', ['$http', '$q', function ($http, $q) {
@@ -127,22 +132,33 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
         return deferred.promise();
     };
 
-    orders.deletedOrder = function(order) {
+    orders.update = function (order) {
+        var deferred = $q.defer();
+        $http.put('/orders/update', order)
+            .success(function (data) {
+                orders.data = data;
+                orders.message = data.status;
+                deferred.resolve();
+            });
+        return deferred.promise;
+    };
+
+
+    orders.deleteOrder = function (order) {
         var deferred = $q.defer();
         $http.delete('/orders/delete', order)
-            .success(function(data) {
-               orders.data = data;
+            .success(function (data) {
+                orders.data = data;
                 orders.message = data.status;
                 deferred.resolve();
             })
-            .error(function(data) {
+            .error(function (data) {
                 orders.message = data.message;
                 deferred.reject();
             });
         return deferred.promise();
     };
-    
-    
+
 
     orders.confirmShipment = function (order) {
         var deferred = $q.defer();

@@ -1,13 +1,15 @@
 <div ng-controller="ordersCtrl">
     <div class="delete">
-        <a ng-click="toggleDelete()" ng-hide="deleteMode"><i class="fa fa-trash" aria-hidden="true"></i> Delete Order</a>
+        <a ng-click="toggleDelete()" ng-hide="deleteMode"><i class="fa fa-trash" aria-hidden="true"></i> Delete
+            Order</a>
         <a ng-click="toggleDelete()" ng-hide="!deleteMode" class="cancel">Cancel</a>
     </div>
 
     <div class="h2">Orders</div>
 
     <div class="add-new">
-        <a ng-click="toggleForm(hideForm)"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}' aria-hidden="true"></i>
+        <a ng-click="toggleForm(hideForm)"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}'
+                                              aria-hidden="true"></i>
             add order</a>
     </div>
 
@@ -41,7 +43,9 @@
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="">Units</label>
                                 <select name="units" id="units" class="form-control">
-                                    <option value="{{unit.value}}" ng-repeat="unit in units" ng-model="order.unit">{{unit.value}}</option>
+                                    <option value="{{unit.value}}" ng-repeat="unit in units" ng-model="order.unit">
+                                        {{unit.value}}
+                                    </option>
                                 </select>
                                 <!--<input type="text" class="form-control" ng-model="order.units">-->
                             </div>
@@ -137,20 +141,29 @@
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
-                <input type="text" name="vendor" value="{{order.vendor}}"
-                       class="input-sm"
-                       ng-model="order.vendor"
-                       ng-disabled="!isEditable[$index]">
-            </td>
-            <td>
-                <select name="placedBy" id="placedBy" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{user.username}}" ng-repeat="user in users">{{user.name}}</option>
+                <!--<input type="text" name="vendor" value="{{order.vendor}}"-->
+                       <!--class="input-sm"-->
+                       <!--ng-model="order.vendor"-->
+                       <!--ng-disabled="!isEditable[$index]">-->
+                <select name="selectVendor" id="vendorSelect" class="input-sm" ng-disabled="!isEditable[$index]">
+                    <option value="{{vendor}}" ng-repeat="vendor in vendors" >{{vendor.company}}</option>
                 </select>
             </td>
             <td>
-                <input type="text" name="date" placeholder="{{order.date | date: 'yyyy-MM-dd'}}"
+                <select name="placedBy" id="placedBy" class="input-sm" ng-disabled="!isEditable[$index]">
+                    <option value="{{user}}" ng-repeat="user in users">{{user.name}}</option>
+                </select>
+            </td>
+            <td>
+                <input type="date" name="date" placeholder="{{order.date | date: 'medium'}}"
                        class="input-sm"
                        ng-model="order.date"
+                       ng-hide="!isEditable[$index]">
+
+                <input type="text" name="date" placeholder="{{order.date | date: 'medium'}}"
+                       class="input-sm"
+                       ng-model="order.date"
+                       ng-hide="isEditable[$index]"
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
@@ -167,11 +180,12 @@
             </td>
 
             <td ng-hide="deleteMode">
-                <a ng-click="editOrder($index, order)" ng-hide="isEditable[$index]" class="edit-icon"><i class="fa fa-pencil"></i></a>
+                <a ng-click="editOrder($index, order)" ng-hide="isEditable[$index]" class="edit-icon"><i
+                            class="fa fa-pencil"></i></a>
                 <a ng-hide="!isEditable[$index]" ng-click="cancel($index)" class=""><i class="fa fa-times"
                                                                                        aria-hidden="true"></i></a>
                 <a ng-click="saveEdits(order)" ng-hide="!isEditable[$index]"><i class="fa fa-floppy-o"
-                                                                                     aria-hidden="true"></i></a>
+                                                                                aria-hidden="true"></i></a>
             </td>
 
             <td ng-hide="!deleteMode">
@@ -179,4 +193,18 @@
             </td>
         </tr>
     </table>
+
+    <div ng-class="{blackout:!hidePopup}">
+        <div class="panel-warning confirm-popup" ng-hide="hidePopup">
+            <div class="panel-heading">
+                <a ng-click="togglePopup()" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            </div>
+            <div class="panel-body">
+                <h5>Are you sure you want to delete this order? </h5>
+                <button class="btn btn-warning" ng-click="confirmDelete()">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </div>  <!--End of Controller Scope-->
