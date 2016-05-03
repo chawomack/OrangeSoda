@@ -33,9 +33,13 @@
     <form ng-submit="submit()" class="add-new-form form-inline">
       <!--<input type="text" name="password" placeholder="password" ng-model="newUser.password" class="form-control"/>-->
       <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients"
-              ng-model="batch.ingredient" class="form-control"></select>
-      <input type="text" name="quantity" placeholder="quantity" ng-model="batch.quantity" class="form-control"/>
-      <select ng-options="unit.value as unit.name for unit in units" ng-model="batch.units" class="form-control"></select>
+              ng-model="batch.ingredient" class="form-control" required name="ingredient">
+        <option></option>
+      </select>
+      <input type="number" name="quantity" placeholder="quantity" ng-model="batch.quantity" class="form-control" required/>
+      <select name="unit" ng-options="unit.value as unit.name for unit in units" ng-model="batch.units" class="form-control" required>
+        <option></option>
+      </select>
       <input type="submit" value="Add Batch" class="btn btn-sm btn-primary"/>
     </form>
   </div>

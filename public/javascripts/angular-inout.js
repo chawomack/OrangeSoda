@@ -12,7 +12,6 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
   });
 
   $scope.shipmentReceived = function(type, order) {
-    debugger;
     if(type == "order")
       $scope.order = order;
     else
@@ -21,26 +20,36 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
   };
 
   $scope.confirmShipment = function()  {
-    debugger;
     if ($scope.order) {
       Orders.confirmShipment($scope.order).then(function () {
         $scope.togglePopup();
         $scope.showMessage(Orders.message, true);
       });
+      $scope.getIngredients = Ingredients.getAll().then(function() {
+        $scope.ingredients = Ingredients.data.ingredients;
+      });
     }
     else {
-      //Batch.fulfill($scope.batch).then(function () {
-      //  $scope.togglePopup();
-      //  $scope.showMessage(Batch.message, true);
-      //});
+      Batch.fulfill($scope.batch).then(function () {
+        $scope.togglePopup();
+        $scope.showMessage(Batch.message, true);
+      });
+      debugger;
+      Batch.outgoing().then(function (data) {
+        debugger;
+        $scope.batches = Batch.data.batches;
+      });
     }
+
   };
 
   $scope.submit = function() {
-    Batch.addNew(this.batch).then(function() {
+    Batch.addNew(this.batch).then(function(data) {
       $scope.batch = {};
       $scope.showMessage(Batch.message, true);
-      debugger;
+      Batch.outgoing().then(function (data) {
+        $scope.batches = Batch.data.batches;
+      });
 
     })
   };
@@ -59,15 +68,15 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
 app.factory('Batch', ['$http', '$q', function($http, $q){
   batches = {};
 
-  batches.getAll = function() {
-    var deferred = $q.defer();
-    $http.get('/batch/all')
-      .success(function(data) {
-        batches.data = data;
-        deferred.resolve();
-      });
-    return deferred.promise;
-  };
+  //batches.getAll = function() {
+  //  var deferred = $q.defer();
+  //  $http.get('/batch/all')
+  //    .success(function(data) {
+  //      batches.data.all = data;
+  //      deferred.resolve();
+  //    });
+  //  return deferred.promise;
+  //};
 
 
   batches.outgoing = function() {
@@ -84,7 +93,7 @@ app.factory('Batch', ['$http', '$q', function($http, $q){
     var deferred = $q.defer();
     $http.post('/batch/addNew', newBatch)
       .success(function(data) {
-        batches.data = data;
+        batches.data = data.batch;
         batches.message = data.messages;
         deferred.resolve();
       });
@@ -95,7 +104,7 @@ app.factory('Batch', ['$http', '$q', function($http, $q){
     var deferred = $q.defer();
     $http.put('/batch/fulfilled', batch)
       .success(function(data) {
-        batches.data = data;
+        batches.data = data.batch;
         batches.message = data.messages;
         deferred.resolve();
       });
