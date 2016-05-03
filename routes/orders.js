@@ -110,7 +110,7 @@ router.post('/fulfilled', function(req, res){
 
 router.put('/update', function(req, res){
   if (req.user) {
-    Order.update({_id: req.body.id}, {$set: req.body}, function (err, order) {
+    Order.update({_id: req.body._id}, {$set: req.body}, function (err, order) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }

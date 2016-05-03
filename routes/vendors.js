@@ -25,7 +25,7 @@ router.route('/addNew').post(function(req, res) {
 
 router.get('/all',function(req, res){
   if (req.user) {
-    Vendor.find(function (err, vendors) {
+    Vendor.find({}).populate('orders').exec(function (err, vendors) {
       if (err) {
         return next(err)
       }
@@ -36,8 +36,8 @@ router.get('/all',function(req, res){
 
 router.put('/update',function(req, res){
   if (req.user) {
-    console.log(req.body)
-    Vendor.update({_id: req.body.id}, {$set: req.body}, function (err, vendor) {
+    console.log(req.body);
+    Vendor.update({_id: req.body._id}, {$set: req.body}, function (err, vendor) {
       if (err) {
         return res.json({status: 'Error', messages: err.message})
       }
@@ -48,7 +48,7 @@ router.put('/update',function(req, res){
 
 router.delete('/delete', function(req, res){
   if (req.user) {
-    Vendor.remove({_id: req.body.id}, function (err, vendor) {
+    Vendor.remove({_id: req.body._id}, function (err, vendor) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
