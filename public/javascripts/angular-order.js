@@ -52,6 +52,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.editOrder = function(index, order) {
+            alert("bitch");
             $scope.isEditable[index] = true;
             $scope.editedOrder = angular.copy(order);
             $scope.editedOrder.index = index;
@@ -86,6 +87,11 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
                 $scope.deletedOrder = {};
             });
         };
+
+        // $scope.formatDate = function(date) {
+        //     var date = new Date(date);
+        //     return date.toLocaleDateString();
+        // }
     }]);
 
 app.factory('Orders', ['$http', '$q', function ($http, $q) {
@@ -123,7 +129,7 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
 
     orders.deletedOrder = function(order) {
         var deferred = $q.defer();
-        $http.delete('/orders/', order)
+        $http.delete('/orders/delete', order)
             .success(function(data) {
                orders.data = data;
                 orders.message = data.status;
