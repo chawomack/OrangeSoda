@@ -1,41 +1,60 @@
 var app = angular.module('CRM');
 
-app.controller('ordersCtrl', ['$scope', 'Orders',
-    function ($scope, Orders) {
-        $scope.orders = [];
-    }]);
+app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', function ($scope, Orders, Ingredients) {
 
-app.factory('Orders', ['$http', '$q', function($http, $q){
+    $scope.getAllOrders = Orders.getAll().then(function () {
+        $scope.orders = Orders.data.orders;
+    });
+    $scope.getIncoming = Orders.getIncoming().then(function () {
+        $scope.incomingOrders = Orders.data.orders;
+    });
+    //$scope.confirmShipment = Orders.confirmShipment(order).then(function () {
+    //    $scope.orders = Orders.data.orders;
+    //});
+
+    $scope.getAllIngredients = Ingredients.getAll().then(function () {
+        $scope.ingredients = Ingredients.data.ingredients;
+        $scope.selected = $scope.ingredients[0];
+    });
+
+}]);
+
+app.factory('Orders', ['$http', '$q', function ($http, $q) {
     orders = {};
-    orders.getAll = function() {
+    orders.getAll = function () {
         var deferred = $q.defer();
         $http.get('/orders/all')
-          .success(function(data) {
-              orders.data = data;
-              deferred.resolve();
-          });
+            .success(function (data) {
+                orders.data = data;
+                deferred.resolve();
+            });
         return deferred.promise;
     };
 
-    orders.getIncoming = function() {
+    orders.getIncoming = function () {
         var deferred = $q.defer();
         $http.get('/orders/incoming')
-          .success(function(data) {
-              orders.data = data;
-              deferred.resolve();
-          });
+            .success(function (data) {
+                orders.data = data;
+                deferred.resolve();
+            });
         return deferred.promise;
     };
 
-    orders.confirmShipment = function(order) {
+    orders.confirmShipment = function (order) {
         var deferred = $q.defer();
-        $http.post('/orders/fulfilled', {id:order._id, ingredient:order.ingredient._id, quantity:order.quantity, units:order.units})
-          .success(function(data) {
-              orders.data = data;
-              deferred.resolve();
-          });
+        $http.post('/orders/fulfilled', {
+                id: order._id,
+                ingredient: order.ingredient._id,
+                quantity: order.quantity,
+                units: order.units
+            })
+            .success(function (data) {
+                orders.data = data;
+                deferred.resolve();
+            });
         return deferred.promise;
     };
-
     return orders;
 }]);
+
