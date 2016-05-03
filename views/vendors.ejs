@@ -23,52 +23,47 @@
 
             <input type="submit" value="Add New Vendor" class="btn btn-sm btn-primary"/>
         </form>
+      </div>
     </div>
-    <table class="crm-table table" >
+    <table class="crm-table table">
         <thead>
-        <th>Name</th>
-        <th>Primary contact</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Billing address</th>
-        <th>Orders</th>
-        <th>Notes</th>
-        <th ng-hide="deleteMode">Edit</th>
-        <th ng-hide="!deleteMode">Delete</th>
+          <th>Name</th>
+          <th>Contact</th>
+          <th>Address</th>
+          <th>Notes</th>
+          <th>Orders</th>
+          <th ng-hide="deleteMode">Edit</th>
+          <th ng-hide="!deleteMode">Delete</th>
         </thead>
         <tr ng-repeat="vendor in vendors">
             <td>
-                <input type="text" name="name" value="{{ company.name }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="company.name" required>
+                <input type="text" name="name" value="{{ vendor.company }}" ng-disabled="!isEditable[$index]"
+                       class="input-lg" ng-model="vendor.company" required>
             </td>
             <td>
-                <input type="text" name="primary contact" value="{{ vendors.contact }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="vendors.contact" required>
+                <input type="text" name="primary contact" value="{{ vendor.primaryContact }}" ng-disabled="!isEditable[$index]"
+                       class="input-sm" ng-model="vendor.primaryContact" required>
+                <input type="text" name="phone" value="{{ vendor.phone }}" ng-disabled="!isEditable[$index]"
+                     class="input-sm" ng-model="vendor.phone" required>
+                <input type="text" name="email" value="{{ vendor.email }}" ng-disabled="!isEditable[$index]"
+                                              class="input-sm" ng-model="vendor.email" required>
             </td>
             <td>
-                <input type="text" name="phone" value="{{ vendors.phone }}" ng-disabled="!isEditable[$index]"
-                        class="input-sm" ng-model="vendors.phone" required>
+                Billing Address: <input type="text" name="billing address" value="{{ vendor.billingAddress }}" ng-disabled="!isEditable[$index]"
+                       class="input-sm" ng-model="vendor.billingAddress" required>
+                Primary Address: <input type="text" name="address" value="{{ vendor.primaryAddress }}" ng-disabled="!isEditable[$index]"
+                     class="input-sm" ng-model="vendor.primaryAddress" required>
             </td>
             <td>
-                <input type="text" name="email" value="{{ vendors.email }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="vendors.email" required>
+              <input type="text" name="notes" value="{{ vendor.notes }}" ng-disabled="!isEditable[$index]"
+                     class="input-sm" ng-model="vendor.notes" required>
             </td>
             <td>
-                <input type="text" name="address" value="{{ address.name }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="address.name" required>
+                <ul>
+                  <li ng-repeat="order in vendor.orders"> {{ order }}</li>
+                </ul>
             </td>
             <td>
-                <input type="text" name="billing address" value="{{ vendors.billing_address }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="vendors.billing_address" required>
-            </td>
-            <td>
-                <input type="text" name="orders" value="{{ vendors.orders }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="vendors.orders" required>
-            </td>
-            <td>
-                <input type="text" name="notes" value="{{ vendors.notes }}" ng-disabled="!isEditable[$index]"
-                       class="input-sm" ng-model="vendors.note" required>
             </td>
 
 
@@ -82,7 +77,6 @@
             <td ng-hide="!deleteMode">
                 <a ng-click="deleteVendor(vendor)" class="delete-icon"><i class="fa fa-trash" aria-hidden="true"></i></a>
             </td>
-        </tr>
         </tr>
     </table>
 
