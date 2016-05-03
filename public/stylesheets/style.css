@@ -69,12 +69,12 @@ a {
 .crm-table.table > tbody > tr > td, .crm-table.table > tbody > tr > th {
     padding: 20px 15px;
 }
-.crm-table .input-sm, .crm-table .input-md {
+.crm-table .input-sm, .crm-table .input-md, .crm-table .input-lg, .crm-table textarea {
     border: none;
     border-bottom: 3px solid #DDD;
     outline: none;
 }
-.crm-table .input-sm:focus, .crm-table .input-md:focus{
+.crm-table .input-sm:focus, .crm-table .input-md:focus, .crm-table .input-lg:focus{
     border-bottom: 3px solid #00B7FF;
 }
 .crm-table .user {
@@ -113,4 +113,8 @@ a {
 
 .form-control .sm {
     width: 25%;
+}
+
+.notes .fa {
+    vertical-align: top;
 }
