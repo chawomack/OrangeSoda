@@ -1,114 +1,144 @@
-<div class="h2">Orders</div>
 <div ng-controller="ordersCtrl">
-    <table class="table">
-        <thead>
-        <th>Quantity</th>
-        <th>Total</th>
-        <th>Vendor</th>
-        <th>Placed By</th>
-        <th>Order Date</th>
-        <th>Shipper</th>
-        <th>Tracking Id</th>
-        </thead>
-        <tr ng-repeat="order in orders">
-            <td>
-                <input type="number" name="quantity" value="{{order.quantity}}"
-                       class="input-sm"
-                       ng-model="order.quantity">
-            </td>
-            <td>
-                <input type="text" name="cost" value="${{order.ingredientTotalCost}}"
-                       class="input-sm"
-                       ng-model="order.ingredientTotalCost">
-            </td>
-            <td>
-                <input type="text" name="vendor" value="{{order.vendor}}"
-                       class="input-sm"
-                       ng-model="order.vendor">
-            </td>
-            <td>
-                <input type="text" name="placedBy" value="{{order.placedBy}}"
-                       class="input-sm"
-                       ng-model="order.placedBy">
-            </td>
-            <td>
-                <input type="date" name="date" value="{{order.date}}"
-                       class="input-sm"
-                       ng-model="order.date">
-            </td>
-            <td>
-                <input type="text" name="shipper" value="{{order.shipping.shipper}}"
-                       class="input-sm"
-                       ng-model="order.shipping.shipper">
-            </td>
-            <td>
-                <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
-                       class="input-sm"
-                       ng-model="order.shipping.shipper">
-            </td>
-        </tr>
-    </table>
+    <div class="delete">
+        <a ng-click="toggleDelete()" ng-hide="deleteMode"><i class="fa fa-trash" aria-hidden="true"></i> Delete
+            Order</a>
+        <a ng-click="toggleDelete()" ng-hide="!deleteMode" class="cancel">Cancel</a>
+    </div>
 
+    <div class="h2">Orders</div>
+
+    <div class="add-new">
+        <a ng-click="toggleForm(hideForm)"><i ng-class='{"fa fa-plus":hideForm, "fa fa-minus": !hideForm}'
+                                              aria-hidden="true"></i>
+            add order</a>
+    </div>
 
     <!--ADD ORDER-->
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <div class="panel-title">Add Order</div>
-        </div>
-
-        <div class="panel-body">
-            <form action="/orders" role="form">
-                <div class="form-group">
-                    <label for="ingredient">Ingredient</label>
-                    <select name="ingredient" id="ingredient" ng-model="selectedIngredient">
-                        <option class="selectpicker" value="ingredient.name" ng-repeat="ingredient in ingredients">
-                            {{ingredient.name}}
-                        </option>
-                    </select>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-default" ng-hide="hideForm" ng-submit="submit()">
+                <div class="panel-heading">
+                    <div class="panel-title">Add Order</div>
                 </div>
 
-                <div class="form-group">
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" class="form-control" min=0 ng-model="quantity">
-                </div>
-
-                <div class="form-group">
-                    <label for="">Units</label>
-                    <input type="text" class="form-control" ng-model="units">
-                </div>
-                <div class="form-group">
-                    <label for="cost">Total Cost</label>
-                    <input type="text" id="cost" class="form-control" ng-model="totalCost">
-                </div>
-
-                <div class="form-group">
-                    <label for="date">Date</label>
-                    <input type="date" id="date" class="form-control" ng-model="date">
-                </div>
-
-
-                <!--SHIPPING INFO-->
                 <div class="panel-body">
-                    <div class="form-group">
-                        <label for="shipper">Shipper</label>
-                        <input type="text" id="shipper" class="form-control" ng-model="shipper">
-                    </div>
+                    <form action="/orders" role="form">
+                        <div class="form-group">
+                            <label for="ingredient">Ingredient</label>
+                            <select class="form-control sm" name="ingredient" id="ingredient"
+                                    ng-model="selectedIngredient">
+                                <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
+                                    {{ingredient.name}}
+                                </option>
 
-                    <div class="form-group">
-                        <label for="tracking">Tracking Id</label>
-                        <input type="text" id="tracking" ng-model="trackingNumber">
-                    </div>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="quantity">Quantity</label>
+                            <input type="number" id="quantity" class="form-control" min=0 ng-model="order.quantity">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="">Units</label>
+                            <input type="text" class="form-control" ng-model="order.units">
+                        </div>
+                        <div class="form-group">
+                            <label for="cost">Total Cost</label>
+                            <input type="text" id="cost" class="form-control" ng-model="order.totalCost">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date">Date</label>
+                            <input type="date" id="date" class="form-control" ng-model="order.date">
+                        </div>
 
 
-                    <!--FULFILLMENT-->
-                    <div class="form-group">
-                        <label for="tracking">Tracking Id</label>
-                        <input type="text" id="tracking" ng-model="trackingNumber">
-                    </div>
+                        <!--SHIPPING INFO-->
+
+                        <div class="form-group">
+                            <label for="shipper">Shipper</label>
+                            <input type="text" id="shipper" class="form-control" ng-model="order.shipper">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tracking">Tracking Id</label>
+                            <input class="form-control" type="text" id="tracking" ng-model="order.trackingNumber">
+                        </div>
+
+
+                        <!--FULFILLMENT-->
+                        <div class="form-group">
+                            <label for="orderedBy">Ordered By</label>
+                            <select name="orderedBy" id="orderedBy" class="form-control">
+                                <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
+                                    {{user.name}}
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Enter Order</button>
+                    </form>
                 </div>
-
-                <button type="submit" class="btn btn-primary">Enter Order</button>
-            </form>
+            </div>
         </div>
-    </div> <!--End of Controller Scope-->
-</div>
+    </div>
+
+    <!--<table class="table">-->
+        <!--<thead>-->
+        <!--<th>Ingredient</th>-->
+        <!--<th>Quantity</th>-->
+        <!--<th>Total</th>-->
+        <!--<th>Vendor</th>-->
+        <!--<th>Placed By</th>-->
+        <!--<th>Order Date</th>-->
+        <!--<th>Shipper</th>-->
+        <!--<th>Tracking Id</th>-->
+        <!--</thead>-->
+        <!--<tr ng-repeat="order in orders">-->
+            <!--<td>-->
+                <!--<select class="form-control sm" name="ingredients">-->
+                    <!--<option value="{{ingredient}}" ng-repeat="ingredient in ingredients">-->
+                        <!--{{ingredient.name}}-->
+                    <!--</option>-->
+                <!--</select>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="number" name="quantity" id="quantity" value="{{order.quantity}}"-->
+                       <!--class="form-control sm"-->
+                       <!--ng-model="order.quantity">-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="text" name="cost" value="${{order.ingredientTotalCost}}"-->
+                       <!--class="form-control sm"-->
+                       <!--ng-model="order.ingredientTotalCost">-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="text" name="vendor" value="{{order.vendor}}"-->
+                       <!--class="form-control"-->
+                       <!--ng-model="order.vendor">-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<select name="placedBy" id="placedBy" class="form-control">-->
+                    <!--<option value="{{user.username}}" ng-repeat="user in users">{{user.name}}</option>-->
+                <!--</select>-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="date" name="date" value="{{order.date}}"-->
+                       <!--class="form-control sm"-->
+                       <!--ng-model="order.date">-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="text" name="shipper" value="{{order.shipping.shipper}}"-->
+                       <!--class="form-control"-->
+                       <!--ng-model="order.shipping.shipper">-->
+            <!--</td>-->
+            <!--<td>-->
+                <!--<input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"-->
+                       <!--class="form-control"-->
+                       <!--ng-model="order.shipping.shipper">-->
+            <!--</td>-->
+        <!--</tr>-->
+    <!--</table>-->
+</div>  <!--End of Controller Scope-->

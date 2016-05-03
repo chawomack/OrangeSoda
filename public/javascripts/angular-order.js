@@ -1,23 +1,45 @@
 var app = angular.module('CRM');
 
-app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', function ($scope, Orders, Ingredients) {
+app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendors',
+    function ($scope, Orders, Ingredients, Users, Vendors) {
+        $scope.hideForm = true;
+        $scope.order = {};
+        $scope.selectedIngredients = "";
+        $scope.quantity = 0;
+        $scope.units = "";
+        $scope.totalCost = 0;
+        $scope.placedBy = "";
+        $scope.date = "";
+        $scope.vendor = "";
+        $scope.shipping = "";
 
-    $scope.getAllOrders = Orders.getAll().then(function () {
-        $scope.orders = Orders.data.orders;
-    });
-    $scope.getIncoming = Orders.getIncoming().then(function () {
-        $scope.incomingOrders = Orders.data.orders;
-    });
-    //$scope.confirmShipment = Orders.confirmShipment(order).then(function () {
-    //    $scope.orders = Orders.data.orders;
-    //});
+        $scope.getAllOrders = Orders.getAll().then(function () {
+            $scope.orders = Orders.data.orders;
+        });
 
-    $scope.getAllIngredients = Ingredients.getAll().then(function () {
-        $scope.ingredients = Ingredients.data.ingredients;
-        $scope.selected = $scope.ingredients[0];
-    });
+        $scope.getIncoming = Orders.getIncoming().then(function () {
+            $scope.incomingOrders = Orders.data.orders;
+        });
 
-}]);
+        $scope.getAllIngredients = Ingredients.getAll().then(function () {
+            $scope.ingredients = Ingredients.data.ingredients;
+        });
+
+        $scope.getAllUsers = Users.getAllUsers().then(function () {
+            $scope.users = Users.data.users;
+        });
+        
+        $scope.getAllVendors = Vendors.getAll().then(function() {
+           $scope.vendors = Vendors.data.vendors; 
+        });
+
+        $scope.toggleDelete = function () {
+            $scope.deleteMode = !$scope.deleteMode;
+        };
+        
+        
+
+    }]);
 
 app.factory('Orders', ['$http', '$q', function ($http, $q) {
     orders = {};
@@ -39,6 +61,16 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
                 deferred.resolve();
             });
         return deferred.promise;
+    };
+
+    orders.addNew = function (order) {
+        var deferred = q.defer();
+        $http.post('/orders/addNew', order)
+            .success(function (data) {
+                orders.message = data;
+                deferred.resolve();
+            });
+        return deferred.promise();
     };
 
     orders.confirmShipment = function (order) {
