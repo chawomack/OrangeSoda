@@ -113,12 +113,11 @@ router.post('/fulfilled', function(req, res){
 
 router.put('/update', function(req, res){
   if (req.user) {
-    console.log("updating");
-    console.log(req.body);
     Order.update({_id: req.body.id}, {$set: req.body}, function (err, order) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
+      
       return res.status(200).json({status: 'Success', order: order});
     });
   }

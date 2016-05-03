@@ -22,11 +22,11 @@
                 </div>
 
                 <div class="panel-body">
-                    <form action="/orders" role="form">
+                    <form role="form" ng-submit="submit()">
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="ingredient">Ingredient</label>
-                                <select class="form-control sm" name="ingredient" id="ingredient"
+                                <select class="form-control" name="ingredient" id="ingredient"
                                         ng-model="selectedIngredient">
                                     <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
                                         {{ingredient.name}}
@@ -43,7 +43,7 @@
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="">Units</label>
                                 <select name="units" id="units" class="form-control">
-                                    <option value="{{unit.value}}" ng-repeat="unit in units" ng-model="order.unit">
+                                    <option value="{{unit}}" ng-repeat="unit in units" ng-model="order.units">
                                         {{unit.value}}
                                     </option>
                                 </select>
@@ -65,7 +65,7 @@
                             <!--SHIPPING INFO-->
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="shipper">Shipper</label>
-                                <input type="text" id="shipper" class="form-control" ng-model="order.shipper">
+                                <input type="text" id="shipper" class="form-control" ng-model="order.shipping.shipper">
                             </div>
 
                         </div>
@@ -73,14 +73,15 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="tracking">Tracking Id</label>
-                                <input class="form-control" type="text" id="tracking" ng-model="order.trackingNumber">
+                                <input class="form-control" type="text" id="tracking" ng-model="order.shipping.trackingNumber">
                             </div>
 
                             <!--FULFILLMENT-->
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="orderedBy">Ordered By</label>
                                 <select name="orderedBy" id="orderedBy" class="form-control">
-                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
+                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy"
+                                    ng-selected="$index == 0">
                                         {{user.name}}
                                     </option>
                                 </select>
@@ -90,8 +91,9 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="vendor">Vendor</label>
-                                <select name="vendor" id="vendor" class="form-control">
-                                    <option value="{{vendor}}" ng-repeat="vendor in vendors" ng-model="order.vendor">
+                                <select name="vendor" id="vendor" class="form-control" >
+                                    <option value="{{vendor}}" ng-repeat="vendor in vendors"
+                                            ng-model="order.vendor">
                                         {{vendor.company}}
                                     </option>
                                 </select>
@@ -146,21 +148,22 @@
                        <!--ng-model="order.vendor"-->
                        <!--ng-disabled="!isEditable[$index]">-->
                 <select name="selectVendor" id="vendorSelect" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{vendor}}" ng-repeat="vendor in vendors" >{{vendor.company}}</option>
+                    <option value="{{vendor}}" ng-repeat="vendor in vendors"
+                        ng-selected="vendor._id == order.vendor._id">{{vendor.company}}</option>
                 </select>
             </td>
             <td>
                 <select name="placedBy" id="placedBy" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{user}}" ng-repeat="user in users">{{user.name}}</option>
+                    <option value="{{user}}" ng-repeat="user in users" ng-selected="order.placedBy._id == user._id">{{user.name}}</option>
                 </select>
             </td>
             <td>
-                <input type="date" name="date" placeholder="{{order.date | date: 'medium'}}"
+                <input type="date" name="date" placeholder="{{order.date}}"
                        class="input-sm"
                        ng-model="order.date"
                        ng-hide="!isEditable[$index]">
 
-                <input type="text" name="date" placeholder="{{order.date | date: 'medium'}}"
+                <input type="text" name="date" placeholder="{{order.date}}"
                        class="input-sm"
                        ng-model="order.date"
                        ng-hide="isEditable[$index]"

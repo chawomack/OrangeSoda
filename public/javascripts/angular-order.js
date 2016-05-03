@@ -5,7 +5,9 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.hideForm = true;
         $scope.deleteMode = false;
         $scope.hideForm = true;
-        $scope.order = {};
+        $scope.order = {
+            shipping: {}
+        };
         $scope.editedOrder = {};
         $scope.deletedOrder = {};
         $scope.isEditable = [];
@@ -22,6 +24,8 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.getAllOrders = Orders.getAll().then(function () {
             $scope.orders = Orders.data.orders;
             for (var i = 0; i < $scope.orders.length; i++) {
+                var date = new Date($scope.orders[i].date);
+                $scope.orders[i].date = date.toLocaleString();
                 $scope.isEditable[i] = false;
             }
         });
@@ -47,7 +51,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.submit = function () {
-            Orders.addNew(this.order).then(function () {
+            Orders.addNew($scope.order).then(function () {
                 $scope.order = {};
                 $scope.showMessage(Orders.message, true);
             });
@@ -65,6 +69,7 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
                     delete orderData.key;
             }
             Orders.update(orderData).then(function () {
+                alert("updated")
                 $scope.isEditable[$scope.editedOrder.index] = false;
                 $scope.editedOrder = {};
                 $scope.showMessage(Orders.message, true);
@@ -83,20 +88,13 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.confirmDelete = function () {
+            alert("Delete Confirmed");
             Orders.deleteOrder($scope.deletedOrder).then(function () {
-                debugger;
-                alert("Delete exectuted");
                 $scope.togglePopup();
                 $scope.showMessage("This order was deleted.", true);
                 $scope.deletedOrder = {};
             });
         };
-
-        $scope.dateFormatter = function (dateStr) {
-            var date = new Date(dateStr);
-            return date.toLocaleString() + " at " + date.toLocaleTimeString();
-        };
-
     }]);
 
 app.factory('Orders', ['$http', '$q', function ($http, $q) {
