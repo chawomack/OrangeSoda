@@ -5,7 +5,7 @@ var convertUnits = require('convert-units');
 var Order = require('../models/order');
 var Ingredient = require('../models/ingredient');
 var Vendor = require('../models/vendor');
-var unitConversion = require('../API/unitConversion');
+var IngredientService = require('../API/ingredientServices');
 
 router.get('/',function(req, res){
   if (req.user) {
@@ -31,16 +31,14 @@ router.route('/addNew')
           return res.json({status: 'Error', messages: err.message})
         }
         //// adds order to ingredient document
-        unitConversion(req.body.ingredient, order, function(err, qty){
-          if (err)
-            return res.json({status: 'Error', messages: err.message});
+        IngredientService.unitConversion(req.body.ingredient, batch, function(err, qty){
+          if (err) return res.json({status: 'Error', messages: err.message});
 
-          Ingredient.update({_id: req.body.ingredient}, { $addToSet: {orders: order._id},
-            $inc:{pending_quantity: qty} },  function(err, ingredient){
-            if (err) {
-              return res.json({status: 'Error', messages: err.message})
-            }
-          });
+          IngredientService.updatePendingQuantity(req.body.ingredient, qty, function(err, data){
+            if (err) return res.json({status: 'Error', messages: err.message});
+
+            return data;
+          })
 
         });
 
@@ -92,21 +90,20 @@ router.route('/:id')
 
 router.post('/fulfilled', function(req, res){
   if (req.user) {
-  Order.update({_id: req.body.id},{$set: {shipping: {fulfilled: {received: true }}}}, function (err, order) {
+    Order.update({_id: req.body.id}, {$set: {shipping: {fulfilled: {received: true}}}}, function (err, order) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      unitConversion(req.body.ingredient,req.body, function(err, qty){
-        if (err)
-          return res.json({status: 'Error', messages: err.message})
+      IngredientService.unitConversion(req.body.ingredient, batch, function (err, qty) {
+        if (err) return res.json({status: 'Error', messages: err.message});
 
-        Ingredient.update({_id: req.body.ingredient}, {$inc: {quantity: req.body.quantity, pending_quantity: -(qty)}},
-          function(err, ingredient){
-            if (err)
-              return res.json({status: 'Error', messages: err.message})
-          });
+        IngredientService.updateQuantity(req.body.ingredient, qty, function (err, data) {
+          if (err) return res.json({status: 'Error', messages: err.message});
+
+          return data;
+        });
       });
-      res.status(200).json({status: 'Success', order: order});
+      return res.status(200).json({status: 'Success', order: order});
     });
   }
 });
