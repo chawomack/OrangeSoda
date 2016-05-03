@@ -114,8 +114,9 @@ router.put('/update', function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
+      
       return res.status(200).json({status: 'Success', order: order});
-    })
+    });
   }
 });
 
@@ -126,7 +127,7 @@ router.delete('/delete', function(req, res){
         return res.json({status: 'Error', messages: err.message});
       }
       return res.status(200).json({status: 'Success', order: order});
-    })
+    });
   }
 });
 
