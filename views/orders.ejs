@@ -23,62 +23,70 @@
 
                 <div class="panel-body">
                     <form action="/orders" role="form">
-                        <div class="form-group">
-                            <label for="ingredient">Ingredient</label>
-                            <select class="form-control sm" name="ingredient" id="ingredient"
-                                    ng-model="selectedIngredient">
-                                <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
-                                    {{ingredient.name}}
-                                </option>
-
-                            </select>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-offset-1">
+                                <label for="ingredient">Ingredient</label>
+                                <select class="form-control sm" name="ingredient" id="ingredient"
+                                        ng-model="selectedIngredient">
+                                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
+                                        {{ingredient.name}}
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group col-md-4 col-md-offset-2">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" id="quantity" class="form-control" min=0 ng-model="order.quantity">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="quantity">Quantity</label>
-                            <input type="number" id="quantity" class="form-control" min=0 ng-model="order.quantity">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-offset-1">
+                                <label for="">Units</label>
+                                <input type="text" class="form-control" ng-model="order.units">
+                            </div>
+
+                            <div class="form-group col-md-4 col-md-offset-2">
+                                <label for="cost">Total Cost</label>
+                                <input type="text" id="cost" class="form-control" ng-model="order.totalCost">
+                            </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="">Units</label>
-                            <input type="text" class="form-control" ng-model="order.units">
-                        </div>
-                        <div class="form-group">
-                            <label for="cost">Total Cost</label>
-                            <input type="text" id="cost" class="form-control" ng-model="order.totalCost">
-                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-offset-1">
+                                <label for="date">Date</label>
+                                <input type="date" id="date" class="form-control" ng-model="order.date">
+                            </div>
 
-                        <div class="form-group">
-                            <label for="date">Date</label>
-                            <input type="date" id="date" class="form-control" ng-model="order.date">
-                        </div>
+                            <!--SHIPPING INFO-->
+                            <div class="form-group col-md-4 col-md-offset-2">
+                                <label for="shipper">Shipper</label>
+                                <input type="text" id="shipper" class="form-control" ng-model="order.shipper">
+                            </div>
 
-
-                        <!--SHIPPING INFO-->
-
-                        <div class="form-group">
-                            <label for="shipper">Shipper</label>
-                            <input type="text" id="shipper" class="form-control" ng-model="order.shipper">
                         </div>
 
-                        <div class="form-group">
-                            <label for="tracking">Tracking Id</label>
-                            <input class="form-control" type="text" id="tracking" ng-model="order.trackingNumber">
+                        <div class="row">
+                            <div class="form-group col-md-4 col-md-offset-1">
+                                <label for="tracking">Tracking Id</label>
+                                <input class="form-control" type="text" id="tracking" ng-model="order.trackingNumber">
+                            </div>
+
+                            <!--FULFILLMENT-->
+                            <div class="form-group col-md-4 col-md-offset-2">
+                                <label for="orderedBy">Ordered By</label>
+                                <select name="orderedBy" id="orderedBy" class="form-control">
+                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
+                                        {{user.name}}
+                                    </option>
+                                </select>
+                            </div>
                         </div>
 
-
-                        <!--FULFILLMENT-->
-                        <div class="form-group">
-                            <label for="orderedBy">Ordered By</label>
-                            <select name="orderedBy" id="orderedBy" class="form-control">
-                                <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
-                                    {{user.name}}
-                                </option>
-                            </select>
+                        <div class="row">
+                            <div class="col-md-4 col-md-offset-4">
+                                <button type="submit" class="btn btn-block btn-primary">Add New Order</button>
+                            </div>
                         </div>
-
-
-                        <button type="submit" class="btn btn-primary">Enter Order</button>
                     </form>
                 </div>
             </div>
