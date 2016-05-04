@@ -42,11 +42,7 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="">Units</label>
-                                <select name="units" id="units" class="form-control">
-                                    <option value="{{unit}}" ng-repeat="unit in units" ng-model="order.units">
-                                        {{unit.value}}
-                                    </option>
-                                </select>
+                                <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control"></select>
                                 <!--<input type="text" class="form-control" ng-model="order.units">-->
                             </div>
 
@@ -124,18 +120,16 @@
         </thead>
         <tr ng-repeat="order in orders">
             <td>
-                <select class="input-sm" name="ingredients" ng-disabled="!isEditable[$index]">
-                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients"
-                    ng-selected="order.ingredient == ingredient._id">
-                        {{ingredient.name}}
-                    </option>
-                </select>
+                <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients" ng-model="order.ingredient"
+                        ng-disabled="!isEditable[$index]" required class="input-sm" name="ingredients"></select>
+
             </td>
             <td>
                 <input type="number" name="quantity" id="quantity" value="{{order.quantity}}"
-                       class="input-sm"
-                       ng-model="order.quantity"
-                       ng-disabled="!isEditable[$index]">
+                       class="input-sm" ng-model="order.quantity" ng-disabled="!isEditable[$index]">
+
+                <select ng-options="unit.value as unit.name for unit in units" ng-model="order.units" class="input-sm"
+                        ng-disabled="!isEditable[$index]" required></select>
             </td>
             <td>
                 <input type="text" name="cost" placeholder="{{order.ingredientTotalCost}}"
@@ -144,18 +138,12 @@
                        ng-disabled="!isEditable[$index]">
             </td>
             <td>
-                <select name="selectVendor" id="vendorSelect" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{vendor}}" ng-repeat="vendor in vendors"
-                            ng-selected="order.vendor == vendor._id">{{vendor.company}}
-                    </option>
-                </select>
+                <select ng-options="vendor._id as vendor.company for vendor in vendors" ng-model="order.vendor"
+                        ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectVendor"></select>
             </td>
             <td>
-                <select name="placedBy" id="placedBy" class="input-sm" ng-disabled="!isEditable[$index]">
-                    <option value="{{user}}" ng-repeat="user in users"
-                            ng-selected="order.placedBy == user._id">{{user.name}}
-                    </option>
-                </select>
+                <select ng-options="user._id as user.username for user in users" ng-model="order.placedBy"
+                        ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectVendor"></select>
 
             </td>
             <td>
