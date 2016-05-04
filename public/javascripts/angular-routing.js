@@ -2,10 +2,45 @@ var app = angular.module('CRM');
 
 app.config(['$routeProvider', function($routeProvider){
   $routeProvider
-    .when('/', {templateUrl:'login'})
+    .when('/', {
+      templateUrl:'login',
+      resolve: {
+        authorized: function(UserAuth, $location) {
+          UserAuth.isLoggedIn().then(function() {
+            //once logged in display inout
+            $location.path('/inout');
+          }, function(err) {
+            $location.path('/');
+          });
+        }
+      }
+
+    })
     .when('/crm', {templateUrl:'crm'})
-    .when('/vendors', {templateUrl:'vendors'})
-    .when('/reports', {templateUrl:'reports'})
+    .when('/vendors', {
+      templateUrl:'vendors',
+      resolve: {
+        authorized: function(UserAuth, $location) {
+          UserAuth.isLoggedIn().then(function() {
+            return
+          }, function(err) {
+            $location.path('/');
+          });
+        }
+      }
+    })
+    .when('/reports', {
+      templateUrl:'reports',
+      resolve: {
+        authorized: function(UserAuth, $location) {
+          UserAuth.isLoggedIn().then(function() {
+            return
+          }, function(err) {
+            $location.path('/');
+          });
+        }
+      }
+    })
     .when('/users', {
       templateUrl:'users',
       resolve: {

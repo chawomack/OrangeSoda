@@ -73,15 +73,17 @@ a {
     border: none;
     border-bottom: 3px solid #DDD;
     outline: none;
+    background: transparent;
 }
 .crm-table .input-sm:focus, .crm-table .input-md:focus, .crm-table .input-lg:focus{
     border-bottom: 3px solid #00B7FF;
+    background: transparent;
 }
 .crm-table .user {
     display:block;
     margin-bottom: 10px;
 }
-.crm-table input[disabled] {
+.crm-table input[disabled], .crm-table select[disabled] {
     border: none;
 }
 .user-field {
@@ -117,4 +119,36 @@ a {
 
 .notes .fa {
     vertical-align: top;
+}
+
+.notes textarea {
+    height: 240px;
+}
+
+.order-qty-input {
+    width: 70px;
+}
+
+.order-details {
+    margin-bottom: 10px;
+}
+.order-details span {
+    font-size: 12px;
+}
+.order-details label {
+    width: 100px;
+    font-weight: lighter;
+    color: #999;
+    font-size: 10px;
+}
+.order-details select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    text-indent: 0px;
+    padding: 1px;
+    text-overflow: '';
+}
+
+.no-padding {
+    padding: 0px;
 }

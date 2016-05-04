@@ -8,8 +8,7 @@ app.controller("mainCtrl", ['$scope', 'UserAuth', '$location', '$window', '$time
       {name: 'Ingredients', path: '/#/ingredients'},
       {name: 'Orders', path: '/#/orders'},
       {name: 'Vendors', path: '/#/vendors'},
-      {name: 'In/Out', path: '/#/inout'},
-      {name: 'Reports', path: '/#/reports'}
+      {name: 'In/Out', path: '/#/inout'}
     ];
 
     $scope.units = [
@@ -77,8 +76,10 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
     var user = {};
     user.login = function(username, password) {
         var deferred = $q.defer();
+      debugger;
         $http.post('/login', {username:username, password:password})
           .success(function (data, status) {
+            console.log(data);
               if(status == 200 && data.messages.success){
                   user.data = data;
                   user.loggedIn = true;
@@ -89,6 +90,7 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
               }
           })
           .error(function (data) {
+              console.log(data);
               user.loggedIn = true;
               deferred.reject();
           });
@@ -108,6 +110,7 @@ app.factory("UserAuth", ['$http', '$q', '$timeout', function($http, $q, $timeout
         }
       })
       .error(function (data) {
+        debugger;
         deferred.reject();
       });
     return deferred.promise;

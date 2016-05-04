@@ -26,6 +26,11 @@ app.controller('usersCtrl', ['$scope', 'Users', function($scope, Users){
   $scope.submit = function() {
     Users.addNew(this.newUser).then(function() {
       $scope.newUser = {};
+      debugger;
+      Users.getAllUsers().then(function(){
+        $scope.users =  Users.data.users;
+      });
+      $scope.showMessage("User Successfully Added.", true);
     })
   };
   $scope.saveEdits = function(userData) {
@@ -51,8 +56,11 @@ app.controller('usersCtrl', ['$scope', 'Users', function($scope, Users){
 
   $scope.confirmDelete = function() {
     Users.deleteUser($scope.deletedUser.username).then(function() {
-      debugger;
       $scope.togglePopup();
+      Users.getAllUsers().then(function(){
+        $scope.users =  Users.data.users;
+      });
+      $scope.showMessage("User Successfully Deleted.", true);
     });
   }
 }]);
@@ -72,8 +80,9 @@ app.factory('Users', ['$http', '$q', function($http, $q){
   users.addNew = function(newUserData) {
     var deferred = $q.defer();
     $http.post('/users/addNew', newUserData)
-      .success(function(newUser) {
-        users.data.push(newUser);
+      .success(function(data) {
+        users.data = data;
+        users.message = data.message;
         deferred.resolve();
       });
     return deferred.promise;

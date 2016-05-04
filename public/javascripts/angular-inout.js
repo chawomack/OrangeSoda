@@ -6,8 +6,9 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
   $scope.batch = {};
   $scope.hideForm = true;
   $scope.batches = [];
-
+  debugger;
   $scope.getIncoming = Orders.getIncoming().then(function() {
+    debugger;
     $scope.incomingOrders = Orders.data.orders;
   });
 
@@ -36,7 +37,6 @@ app.controller('inOutCtrl', ['$scope', 'Orders', 'Ingredients', 'Batch', functio
       });
       debugger;
       Batch.outgoing().then(function (data) {
-        debugger;
         $scope.batches = Batch.data.batches;
       });
     }

@@ -30,29 +30,25 @@ router.route('/addNew')
         if (err) {
           return res.json({status: 'Error', messages: err.message})
         }
-        //// adds order to ingredient document
-        IngredientService.unitConversion(req.body.ingredient, req.body, function(err, qty){
+
+        //return res.status(200).json({status: 'Success', order: data});
+      });
+      // adds order to ingredient document
+      IngredientService.unitConversion(req.body.ingredient, req.body, function(err, qty){
+        if (err) return res.json({status: 'Error', messages: err.message});
+
+        IngredientService.updatePendingQuantity(req.body.ingredient, qty, function(err, data){
           if (err) return res.json({status: 'Error', messages: err.message});
-
-          return IngredientService.updatePendingQuantity(req.body.ingredient, qty, function(err, data){
-            if (err) return res.json({status: 'Error', messages: err.message});
-
-            return data;
-          });
-
-
         });
-
-        // adds order to vendor document
-        Vendor.update({_id: req.body.vendor}, { $addToSet: {orders: order._id} }, function(err, data){
-          if (err) {
-            return res.json({status: 'Error', messages: err.message})
-          }
-        });
-
-        return res.status(200).json({status: 'Success', order: data});
       });
 
+      // adds order to vendor document
+      Vendor.update({_id: req.body.vendor}, { $addToSet: {orders: order._id} }, function(err, data){
+        if (err) {
+          //return res.json({status: 'Error', messages: err.message})
+        }
+      });
+      return res.status(200).json({status: 'Success', order: order});
     }
   });
 
@@ -69,7 +65,7 @@ router.get('/all',function(req, res){
 
 router.get('/incoming',function(req, res){
   if (req.user) {
-    Order.find({shipping: {fulfilled: {received: false }}}).populate('ingredient')
+    Order.find({"shipping.fulfilled.received":false}).populate('ingredient')
       .populate('vendor').exec(function (err, orders) {
       if (err) {
         return next(err)
@@ -95,7 +91,7 @@ router.post('/fulfilled', function(req, res){
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
-      IngredientService.unitConversion(req.body.ingredient, batch, function (err, qty) {
+      IngredientService.unitConversion(req.body.ingredient, req.body, function (err, qty) {
         if (err) return res.json({status: 'Error', messages: err.message});
 
         IngredientService.updateQuantity(req.body.ingredient, qty, function (err, data) {
@@ -104,7 +100,7 @@ router.post('/fulfilled', function(req, res){
           return data;
         });
       });
-      return res.status(200).json({status: 'Success', order: order});
+      return res.status(200).json({status: 'Success', order: order, message: "Order shipment has been fulfilled."});
     });
   }
 });

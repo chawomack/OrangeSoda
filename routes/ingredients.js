@@ -21,16 +21,6 @@ router.post('/addNew', function(req, res){
     }
 });
 
-//router.route('/:id').get(function(req, res, next){
-//  Ingredient.findOne({_id: req.params.id}, function(err, data) {
-//    if (err) {
-//      next();
-//      return res.json({status: 'Error', messages: err.message})
-//    }
-//    return res.status(200).json(data);
-//  });
-//});
-
 router.get('/all', function(req, res){
   Ingredient.find(function(err, ingredients){
     if (err) {

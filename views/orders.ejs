@@ -16,7 +16,7 @@
     <!--ADD ORDER-->
     <div class="row">
         <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-default" ng-hide="hideForm" ng-submit="submit()">
+            <div class="panel panel-default" ng-hide="hideForm">
                 <div class="panel-heading">
                     <div class="panel-title">Add Order</div>
                 </div>
@@ -26,12 +26,8 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="ingredient">Ingredient</label>
-                                <select class="form-control" name="ingredient" id="ingredient"
-                                        ng-model="selectedIngredient">
-                                    <option value="{{ingredient}}" ng-repeat="ingredient in ingredients">
-                                        {{ingredient.name}}
-                                    </option>
-                                </select>
+                                <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients" ng-model="order.ingredient"
+                                        required class="form-control" name="ingredients"></select>
                             </div>
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="quantity">Quantity</label>
@@ -42,13 +38,13 @@
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="">Units</label>
-                                <select ng-options="unit.value as unit.name for unit in units" ng-model="ingredient.units" class="form-control"></select>
+                                <select ng-options="unit.value as unit.name for unit in units" ng-model="order.units" class="form-control"></select>
                                 <!--<input type="text" class="form-control" ng-model="order.units">-->
                             </div>
 
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="cost">Total Cost</label>
-                                <input type="text" id="cost" class="form-control" ng-model="order.totalCost">
+                                <input type="text" id="cost" class="form-control" ng-model="order.ingredientTotalCost">
                             </div>
                         </div>
 
@@ -76,23 +72,16 @@
                             <!--FULFILLMENT-->
                             <div class="form-group col-md-4 col-md-offset-2">
                                 <label for="orderedBy">Ordered By</label>
-                                <select name="orderedBy" id="orderedBy" class="form-control">
-                                    <option value="{{user}}" ng-repeat="user in users" ng-model="order.placedBy">
-                                        {{user.name}}
-                                    </option>
-                                </select>
+                                <select ng-options="user._id as user.username for user in users" ng-model="order.placedBy"
+                                        required id="userSelect" class="form-control" name="selectUser"></select>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="form-group col-md-4 col-md-offset-1">
                                 <label for="vendor">Vendor</label>
-                                <select name="vendor" id="vendor" class="form-control">
-                                    <option value="{{vendor}}" ng-repeat="vendor in vendors"
-                                            ng-model="order.vendor">
-                                        {{vendor.company}}
-                                    </option>
-                                </select>
+                                <select ng-options="vendor._id as vendor.company for vendor in vendors" ng-model="order.vendor"
+                                        required id="vendorSelect" class="form-control" name="selectVendor"></select>
                             </div>
 
                             <div class="col-md-4 col-md-offset-2">
@@ -108,69 +97,76 @@
 
     <table class="crm-table table">
         <thead>
-        <th>Ingredient</th>
-        <th>Quantity</th>
-        <th>Total</th>
-        <th>Vendor</th>
+        <th>Order</th>
+        <th>Shipping</th>
         <th>Placed By</th>
-        <th>Order Date</th>
-        <th>Shipper</th>
-        <th>Tracking Id</th>
         <th>Edit</th>
         </thead>
         <tr ng-repeat="order in orders">
             <td>
-                <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients" ng-model="order.ingredient"
-                        ng-disabled="!isEditable[$index]" required class="input-sm" name="ingredients"></select>
+                <div class="order-details">
+                    <label>Ingredient:</label>
+                    <select ng-options="ingredient._id as ingredient.name for ingredient in ingredients" ng-model="order.ingredient"
+                            ng-disabled="!isEditable[$index]" required class="input-sm" name="ingredients"></select>
+                </div>
+                <div class="order-details">
+                <label>Quantity:</label>
+                    <span ng-hide="isEditable[$index]"> {{order.quantity}} {{order.units}}</span>
+                    <input type="number" name="quantity" id="quantity" value="{{order.quantity}}"
+                           class="input-sm order-qty-input" ng-model="order.quantity" ng-hide="!isEditable[$index]">
+
+                    <select ng-options="unit.value as unit.name for unit in units" ng-model="order.units" class="input-sm no-padding"
+                            ng-hide="!isEditable[$index]" required></select>
+                </div>
+                <div class="order-details">
+                    <label>Vendor:</label>
+                    <select ng-options="vendor._id as vendor.company for vendor in vendors" ng-model="order.vendor"
+                            ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectVendor"></select>
+                </div>
+                <div class="order-details">
+                    <label>Date placed:</label>
+                    <input type="date" name="date"
+                           class="input-sm"
+                           ng-model="order.date"
+                           ng-hide="!isEditable[$index]">
+
+                    <input type="text" name="date" placeholder="{{order.date}}"
+                           class="input-sm no-padding"
+                           ng-model="order.date"
+                           ng-hide="isEditable[$index]"
+                           ng-disabled="!isEditable[$index]">
+                </div>
+                <div class="order-details">
+                    <label>Total Cost:</label>
+                    <input type="text" name="cost" placeholder="{{order.ingredientTotalCost}}"
+                           class="input-sm no-padding"
+                           ng-model="order.ingredientTotalCost"
+                           ng-disabled="!isEditable[$index]">
+                </div>
 
             </td>
             <td>
-                <input type="number" name="quantity" id="quantity" value="{{order.quantity}}"
-                       class="input-sm" ng-model="order.quantity" ng-disabled="!isEditable[$index]">
-
-                <select ng-options="unit.value as unit.name for unit in units" ng-model="order.units" class="input-sm"
-                        ng-disabled="!isEditable[$index]" required></select>
+                <div class="order-details">
+                    <label>Shipper:</label>
+                    <input type="text" name="shipper" value="{{order.shipping.shipper}}"
+                           class="input-sm"
+                           ng-model="order.shipping.shipper"
+                           ng-disabled="!isEditable[$index]">
+                </div>
+                <div class="order-details">
+                    <label>Tracking:</label>
+                    <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
+                           class="input-sm"
+                           ng-model="order.shipping.trackingNumber"
+                           ng-disabled="!isEditable[$index]">
+                </div>
             </td>
             <td>
-                <input type="text" name="cost" placeholder="{{order.ingredientTotalCost}}"
-                       class="input-sm"
-                       ng-model="order.ingredientTotalCost"
-                       ng-disabled="!isEditable[$index]">
+                <div class="order-details">
+                    <select ng-options="user._id as user.username for user in users" ng-model="order.placedBy"
+                        ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectUser"></select>
+                </div>
             </td>
-            <td>
-                <select ng-options="vendor._id as vendor.company for vendor in vendors" ng-model="order.vendor"
-                        ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectVendor"></select>
-            </td>
-            <td>
-                <select ng-options="user._id as user.username for user in users" ng-model="order.placedBy"
-                        ng-disabled="!isEditable[$index]" required id="vendorSelect" class="input-sm" name="selectVendor"></select>
-
-            </td>
-            <td>
-                <input type="date" name="date"
-                       class="input-sm"
-                       ng-model="order.date"
-                       ng-hide="!isEditable[$index]">
-
-                <input type="text" name="date" placeholder="{{order.date}}"
-                       class="input-sm"
-                       ng-model="order.date"
-                       ng-hide="isEditable[$index]"
-                       ng-disabled="!isEditable[$index]">
-            </td>
-            <td>
-                <input type="text" name="shipper" value="{{order.shipping.shipper}}"
-                       class="input-sm"
-                       ng-model="order.shipping.shipper"
-                       ng-disabled="!isEditable[$index]">
-            </td>
-            <td>
-                <input type="text" name="shipper" value=" {{order.shipping.trackingNumber}}"
-                       class="input-sm"
-                       ng-model="order.shipping.trackingNumber"
-                       ng-disabled="!isEditable[$index]">
-            </td>
-
             <td ng-hide="deleteMode">
                 <a ng-click="editOrder($index, order)" ng-hide="isEditable[$index]" class="edit-icon"><i
                             class="fa fa-pencil"></i></a>

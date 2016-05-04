@@ -48,12 +48,15 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.submit = function () {
+            debugger;
+            this.order.shipping.fulfilled = {received:false};
             Orders.addNew(this.order).then(function () {
                 $scope.order = {};
-                $scope.showMessage(Orders.message, true);
+                debugger;
                 Orders.getAll().then(function () {
                     $scope.orders = Orders.data.orders;
                 });
+                $scope.showMessage(Orders.message, true);
             });
         };
 
@@ -128,7 +131,7 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
                 orders.message = data.status;
                 deferred.resolve();
             });
-        return deferred.promise();
+        return deferred.promise;
     };
 
     orders.update = function (order) {
