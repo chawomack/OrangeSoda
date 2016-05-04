@@ -50,9 +50,9 @@ router.put('/update', function(req, res){
     })
   }
 });
-router.delete('/delete', function(req, res){
+router.delete('/delete/:id', function(req, res){
   if (req.user) {
-    Ingredient.remove({_id: req.body._id}, function (err, ingredient) {
+    Ingredient.findByIdAndRemove(req.params.id, function (err, ingredient) {
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }

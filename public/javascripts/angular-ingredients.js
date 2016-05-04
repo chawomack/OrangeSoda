@@ -9,7 +9,6 @@ app.controller('ingredientsCtrl', ['$scope', 'Ingredients', function($scope, Ing
   $scope.deleteMode = false;
 
   $scope.getAllIngredients = Ingredients.getAll().then(function(){
-    debugger;
     $scope.ingredients =  Ingredients.data.ingredients;
     for(var i = 0; i < $scope.ingredients.length; i++)
       $scope.isEditable[i] = false;
@@ -26,7 +25,7 @@ app.controller('ingredientsCtrl', ['$scope', 'Ingredients', function($scope, Ing
       if($scope.editedIngred.key == ingredData.key && key != '_id')
         delete ingredData.key;
     }
-    debugger;
+
     Ingredients.update(ingredData).then(function() {
       $scope.isEditable[$scope.editedIngred.index] = false;
       $scope.editedIngred = {};
@@ -43,6 +42,9 @@ app.controller('ingredientsCtrl', ['$scope', 'Ingredients', function($scope, Ing
     Ingredients.addNew(this.ingredient).then(function() {
       $scope.ingredient = {};
       $scope.showMessage(Ingredients.message, true);
+      Ingredients.getAll().then(function() {
+        $scope.ingredients = Ingredients.data.ingredients;
+      });
     })
   };
 
@@ -56,10 +58,11 @@ app.controller('ingredientsCtrl', ['$scope', 'Ingredients', function($scope, Ing
   };
 
   $scope.confirmDelete = function() {
-    debugger;
     Ingredients.deleteIngredient($scope.deletedIngred).then(function() {
       $scope.togglePopup();
-      debugger;
+      Ingredients.getAll().then(function() {
+        $scope.ingredients = Ingredients.data.ingredients;
+      });
       $scope.showMessage("This ingredient was deleted.", true);
       $scope.deletedIngred = {};
     });
@@ -91,9 +94,9 @@ app.factory('Ingredients', ['$http', '$q', function($http, $q){
     return deferred.promise;
   };
 
-  ingredients.deleteIngredient = function(ingredientId) {
+  ingredients.deleteIngredient = function(ingred) {
     var deferred = $q.defer();
-    $http.delete('/ingredients/delete', ingredientId)
+    $http.delete('/ingredients/delete/' + ingred._id)
       .success(function(data) {
         ingredients.data = data;
         ingredients.message = data.status;

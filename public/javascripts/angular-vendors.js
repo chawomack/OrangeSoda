@@ -41,6 +41,9 @@ app.controller('vendorsCtrl', ['$scope', 'Vendors', function($scope, Vendors){
         Vendors.addNew(this.vendor).then(function() {
             $scope.vendor = {};
             $scope.showMessage(Vendors.message, true);
+            Vendors.getAll().then(function(){
+                $scope.vendors =  Vendors.data.vendors;
+            });
         })
     };
 
@@ -56,6 +59,9 @@ app.controller('vendorsCtrl', ['$scope', 'Vendors', function($scope, Vendors){
     $scope.confirmDelete = function() {
         Vendors.deleteVendor($scope.deletedVendor).then(function() {
             $scope.togglePopup();
+            Vendors.getAll().then(function() {
+                $scope.vendors = Vendors.data.vendors;
+            });
             $scope.showMessage("This vendor was deleted.", true);
             $scope.deletedVendor = {};
         });
@@ -77,6 +83,7 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
 
     vendors.addNew = function(newVendor) {
         var deferred = $q.defer();
+        debugger;
         $http.post('/vendors/addNew', newVendor)
             .success(function(data) {
                 vendors.data = data;
@@ -86,9 +93,9 @@ app.factory('Vendors', ['$http', '$q', function($http, $q){
         return deferred.promise;
     };
 
-    vendors.deleteVendor = function(vendorId) {
+    vendors.deleteVendor = function(vendor) {
         var deferred = $q.defer();
-        $http.delete('/vendors/delete', vendorId)
+        $http.delete('/vendors/delete/' + vendor._id)
             .success(function(data) {
                 vendors.data = data;
                 vendors.message = data.status;

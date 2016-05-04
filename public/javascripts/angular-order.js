@@ -10,14 +10,6 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         $scope.deletedOrder = {};
         $scope.isEditable = [];
 
-        /* Couldn't access from mainCtrl */
-        $scope.units = [
-            {name: 'milligrams', value: 'mg'},
-            {name: 'grams', value: 'g'},
-            {name: 'kilograms', value: 'kg'},
-            {name: 'milliliter', value: 'ml'},
-            {name: 'liter', value: 'ltr'}
-        ];
 
         $scope.getAllOrders = Orders.getAll().then(function () {
             $scope.orders = Orders.data.orders;
@@ -56,9 +48,12 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.submit = function () {
-            Orders.addNew($scope.order).then(function () {
+            Orders.addNew(this.order).then(function () {
                 $scope.order = {};
                 $scope.showMessage(Orders.message, true);
+                Orders.getAll().then(function () {
+                    $scope.orders = Orders.data.orders;
+                });
             });
         };
 
@@ -73,8 +68,8 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
                 if ($scope.editedOrder.key == orderData.key && key != '_id')
                     delete orderData.key;
             }
+
             Orders.update(orderData).then(function () {
-                alert("updated")
                 $scope.isEditable[$scope.editedOrder.index] = false;
                 $scope.editedOrder = {};
                 $scope.showMessage(Orders.message, true);
@@ -87,15 +82,16 @@ app.controller('ordersCtrl', ['$scope', 'Orders', 'Ingredients', 'Users', 'Vendo
         };
 
         $scope.deleteOrder = function (order) {
-            alert("delete clicked");
             $scope.deletedOrder = order;
             $scope.togglePopup();
         };
 
         $scope.confirmDelete = function () {
-            alert("Delete Confirmed");
             Orders.deleteOrder($scope.deletedOrder).then(function () {
                 $scope.togglePopup();
+                Orders.getAll().then(function () {
+                    $scope.orders = Orders.data.orders;
+                });
                 $scope.showMessage("This order was deleted.", true);
                 $scope.deletedOrder = {};
             });
@@ -149,8 +145,10 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
 
     orders.deleteOrder = function (order) {
         var deferred = $q.defer();
-        $http.delete('/orders/delete', order)
+        debugger;
+        $http.delete('/orders/delete/' + order._id)
             .success(function (data) {
+              debugger;
                 orders.data = data;
                 orders.message = data.status;
                 deferred.resolve();
@@ -159,7 +157,7 @@ app.factory('Orders', ['$http', '$q', function ($http, $q) {
                 orders.message = data.message;
                 deferred.reject();
             });
-        return deferred.promise();
+        return deferred.promise;
     };
 
 
