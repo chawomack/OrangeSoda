@@ -46,15 +46,17 @@ router.put('/update',function(req, res){
   }
 });
 
-router.delete('/delete', function(req, res){
+router.delete('/delete/:id', function(req, res){
   if (req.user) {
-    Vendor.remove({_id: req.body._id}, function (err, vendor) {
+    Vendor.findByIdAndRemove(req.params.id, function(err, vendor){
+
       if (err) {
         return res.json({status: 'Error', messages: err.message});
       }
       return res.status(200).json({status: 'Success', vendor: vendor});
-    })
+    });
   }
 });
+
 
 module.exports = router;

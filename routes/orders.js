@@ -31,14 +31,15 @@ router.route('/addNew')
           return res.json({status: 'Error', messages: err.message})
         }
         //// adds order to ingredient document
-        IngredientService.unitConversion(req.body.ingredient, batch, function(err, qty){
+        IngredientService.unitConversion(req.body.ingredient, req.body, function(err, qty){
           if (err) return res.json({status: 'Error', messages: err.message});
 
-          IngredientService.updatePendingQuantity(req.body.ingredient, qty, function(err, data){
+          return IngredientService.updatePendingQuantity(req.body.ingredient, qty, function(err, data){
             if (err) return res.json({status: 'Error', messages: err.message});
 
             return data;
-          })
+          });
+
 
         });
 
@@ -120,13 +121,14 @@ router.put('/update', function(req, res){
   }
 });
 
-router.delete('/delete', function(req, res){
+router.delete('/delete/:id', function(req, res){
   if (req.user) {
-    Order.remove({_id: req.body.id}, function (err, order) {
+    Order.findByIdAndRemove(req.params.id, function(err, order){
+
       if (err) {
-        return res.json({status: 'Error', messages: err.message});
-      }
-      return res.status(200).json({status: 'Success', order: order});
+            return res.json({status: 'Error', messages: err.message});
+          }
+          return res.status(200).json({status: 'Success', order: order});
     });
   }
 });
